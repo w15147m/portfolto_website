@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
-    {{-- <link rel="icon" type="image/png" href="images/favicon.png"> --}}
+    <title>admin</title>
+    <link rel="icon" type="image/png" href="{{ asset('admin/images/favicon.png') }}">
 
     <!-- CSS Assets -->
     <link rel="stylesheet" href="{{ asset('admin/css/app.css') }}">

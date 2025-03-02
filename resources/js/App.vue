@@ -4,15 +4,15 @@
 <SidebarComponent/>
 <NavbarComponent/>
 <main class="main-content w-full pb-8" >
-    <!-- <HomeComponent /> -->
+    <HomeComponent />
 </main>
 </template>
 
 <script>
 import HomeComponent from '@/admin/pages/HomeComponent.vue';
-import FooterComponent from './admin/layout/FooterComponent.vue';
-import SidebarComponent from './admin/layout/SidebarComponent.vue';
-import NavbarComponent from './admin/layout/NavbarComponent.vue';
+import FooterComponent from '@/admin/layout/FooterComponent.vue';
+import SidebarComponent from '@/admin/layout/sidebar/SidebarComponent.vue';
+import NavbarComponent from '@/admin/layout/navbar/NavbarComponent.vue';
 export default {
     components: {
         HomeComponent,

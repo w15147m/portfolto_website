@@ -3,7 +3,7 @@
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
             <div class="text-center">
-                <img class="mx-auto size-16 lg:hidden" src="images/app-logo.png" alt="logo">
+                <img class="mx-auto size-16 lg:hidden" src="{{ asset('admin/images/app-logo.png') }}" alt="logo">
                 <div class="mt-4">
                     <h2 class="text-2xl font-semibold text-slate-600 dark:text-navy-100">
                         Welcome Back

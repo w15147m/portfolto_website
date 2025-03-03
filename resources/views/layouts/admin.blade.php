@@ -5,7 +5,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
+       <!-- CSRF Token -->
+       <meta name="_token" content="{{ csrf_token() }}">
+       <meta name="cdnUrl" content="{{ env('CDN_URL') }}">
+       <meta name="app-name" content="{{ config('app.name') }}">
+       <meta name="appUrl" content="{{ config('app.url') }}">
+       <meta name="appEnv" content="{{ config('app.env') }}">
+    @if (session()->has('token'))
+        <input type="hidden" id="accessToken" value="{{ json_encode(session('token')) }}">
+    @endif
+    @if (session()->has('authUser'))
+        <input type="hidden" id="authUser" value="{{ json_encode(session('authUser')) }}">
+    @endif
     <title>admin</title>
     <link rel="icon" type="image/png" href="{{ asset('admin/images/favicon.png') }}">
 
@@ -22,7 +33,9 @@
         integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     @vite(['resources/css/app.css'])
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script>
         localStorage.getItem("_x_darkMode_on") === "true" &&
             document.documentElement.classList.add("dark");
@@ -38,10 +51,10 @@
 
     <!-- Page Wrapper -->
     {{-- @include('layouts.partials.navbar') --}}
-    <div id="root" class="min-h-100vh flex grow bg-slate-50 dark:bg-navy-900" x-cloak="" >
+    <div id="root" class="min-h-100vh flex grow bg-slate-50 dark:bg-navy-900" x-cloak="">
 
         {{-- @include('layouts.partials.sidebar') --}}
-      
+
 
     </div>
 

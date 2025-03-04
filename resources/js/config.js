@@ -25,7 +25,10 @@ if(authUserJson )
 }
 if(accessToken)
 {
-    localStorage.setItem('accessToken', accessToken);
+    console.log(accessToken);
+    localStorage.setItem('accessToken', JSON.stringify({ accessToken: accessToken.replace(/"/g, '') }));
+
+
 }else{
     const tokenExist =   localStorage.getItem('accessToken');
     if(!tokenExist 

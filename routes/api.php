@@ -12,18 +12,15 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectImageController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/test', function () {
-    return response()->json(['message' => 'API is working']);
+Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::resources([
+        'portfolios' => PortfolioController::class,
+        'education' => EducationController::class,
+        'experience' => ExperienceController::class,
+        'services' => ServiceController::class,
+        'skills' => SkillController::class,
+        'social-links' => SocialLinkController::class,
+        'projects' => ProjectController::class,
+        'project-images' => ProjectImageController::class,
+    ]);
 });
-
-// Grouped resource routes for API
-Route::resources([
-    'portfolios' => PortfolioController::class,
-    'education' => EducationController::class,
-    'experience' => ExperienceController::class,
-    'services' => ServiceController::class,
-    'skills' => SkillController::class,
-    'social-links' => SocialLinkController::class,
-    'projects' => ProjectController::class,
-    'project-images' => ProjectImageController::class,
-]);

@@ -1,23 +1,11 @@
 
 export const getHeader = function () {
-    const tokenData = JSON.parse(
-        window.localStorage.getItem("accessToken")
-    ).accessToken;
+    const tokenData = JSON.parse(localStorage.getItem("accessToken") || "{}")?.accessToken;
     const headers = {
         Accept: "application/json",
-        Authorization: "Bearer " + tokenData,
+        ...(tokenData && { Authorization: `Bearer ${tokenData}` })
     };
-
-    return headers;
-};
-export const getHeader2 = function () {
-    const tokenData = JSON.parse(
-        window.localStorage.getItem("accessToken")
-    ).accessToken;
-    const headers = {
-        Authorization: "Bearer " + tokenData,
-    };
-
+    console.log("Request Headers:", headers); 
     return headers;
 };
 

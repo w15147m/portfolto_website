@@ -8,7 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
-
+use Illuminate\Support\Facades\Log;
 class AuthenticatedSessionController extends Controller
 {
     /**
@@ -47,17 +47,17 @@ class AuthenticatedSessionController extends Controller
     /**
      * Destroy an authenticated session.
      */
-    public function destroy(Request $request): RedirectResponse
+    public function destroy(Request $request)
     {
         $user = Auth::user();
-
+        
         $user->tokens()->delete();
-
+        
         Auth::guard('web')->logout();
-
+        
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-
-        return redirect('/');
+        
+        return response()->json(['message' => 'Logout successful.'], 200);
     }
 }

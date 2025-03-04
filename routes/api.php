@@ -1,5 +1,7 @@
+
 <?php
-use Illuminate\Support\Facades\Route;
+// routes/api.php
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\EducationController;
 use App\Http\Controllers\ExperienceController;
@@ -8,8 +10,13 @@ use App\Http\Controllers\SkillController;
 use App\Http\Controllers\SocialLinkController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectImageController;
+use Illuminate\Support\Facades\Route;
 
-// Grouped resource routes
+Route::get('/test', function () {
+    return response()->json(['message' => 'API is working']);
+});
+
+// Grouped resource routes for API
 Route::resources([
     'portfolios' => PortfolioController::class,
     'education' => EducationController::class,

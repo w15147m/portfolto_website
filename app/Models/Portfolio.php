@@ -50,7 +50,7 @@ class Portfolio extends Model
         return $this->hasMany(SocialLink::class);
     }
 
-    public function experiences()
+    public function experience()
     {
         return $this->hasMany(Experience::class);
     }

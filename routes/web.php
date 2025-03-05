@@ -18,4 +18,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::get('/{any}', function () {
+    return view('adminComponents.index'); // Replace with the view that loads your Vue app
+})->where('any', '.*');
+
 require __DIR__.'/auth.php';

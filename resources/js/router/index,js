@@ -1,0 +1,31 @@
+import { createRouter, createWebHistory } from 'vue-router';
+import DashboardLayout from '../user/DashboardLayout.vue';
+import HomeComponent from '../user/pages/HomeComponent.vue';
+import PortfolioComponent from '../user/pages/portfolio/PortfolioComponent.vue';
+
+const routes = [
+  {
+    path: "/dashboard",
+    name: "dashboard",
+    component: DashboardLayout,  // Use DashboardLayout as parent
+    children: [
+      {
+        path: "",  // Default child route for /dashboard
+        name: "Home",
+        component: HomeComponent,
+      },
+      {
+        path: "Portfolio",  // Default child route for /dashboard
+        name: "Portfolio",
+        component: PortfolioComponent,
+      },
+    ],
+  },
+];
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes,
+});
+
+export default router;

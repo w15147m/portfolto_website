@@ -10,7 +10,7 @@ class PortfolioController extends Controller
     // Display a list of portfolios
     public function index()
     {
-        $portfolios = Portfolio::with(['user', 'education', 'skills', 'services', 'projects', 'socialLinks'])->get();
+        $portfolios = Portfolio::get();
         return response()->json($portfolios);
     }
 

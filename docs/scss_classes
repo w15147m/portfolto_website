@@ -1,0 +1,54 @@
+<!-- Flex Properties -->
+<div class="jc-center jc-start jc-end jc-between jc-around jc-evenly">Justify Content</div>
+<div class="ai-center ai-start ai-end ai-baseline ai-stretch">Align Items</div>
+
+<!-- Mobile Flex Properties -->
+<div class="m-jc-center m-jc-start m-jc-end m-jc-between m-jc-around m-jc-evenly">Mobile Justify Content</div>
+<div class="m-ai-center m-ai-start m-ai-end m-ai-baseline m-ai-stretch">Mobile Align Items</div>
+
+<!-- Width and Height -->
+<div class="w-100 w-50 w-25 w-px-300 w-rem-10">Width Variants</div>
+<div class="h-px-100 h-px-200 h-p-50">Height Variants</div>
+
+<!-- min-width, min-width, max-height, or min-heightt -->
+<div class="max-w-100 max-w-50 max-w-25 max-w-px-300">Width Variants</div>
+<div class="min-w-100 min-w-50 min-w-25 min-w-px-300">Width Variants</div>
+
+<div class="max-h-100 max-h-50 max-h-25 mix-h-px-300">hidth Variants</div>
+<div class="min-h-100 min-h-50 min-h-25 min-h-px-300">Width Variants</div>
+
+<!-- Border Radius and Borders -->
+<div class="br-10 br-20 bd-1 bd-2 bd-5">Borders and Radius</div>
+<div class="bd-b-2 bd-t-3 bd-l-4 bd-r-5 bd-2-cc">Border Customizations</div>
+
+<!-- Padding -->
+<div class="pd-5 pd-b-10 pd-t-15 pd-l-20 pd-r-25">Padding Variants</div>
+<div class="pd-px-10 pd-t-px-20 pd-b-px-30 pd-l-px-40 pd-r-px-50">Pixel-based Padding</div>
+
+<!-- Margin -->
+<div class="m-px-10 m-t-px-20 m-b-px-30 m-l-px-40 m-r-px-50">Margin Variants</div>
+<div class="m-x-px-10 m-y-px-20">Margin X & Y</div>
+
+<!-- Positioning -->
+<div class="pos-relative pos-absolute pos-fixed pos-sticky pos-static">Position Types</div>
+<div class="top-px-50 bottom-px-100 left-px-150 right-px-200">Positioning Offsets</div>
+
+<!-- Transform -->
+<div class="translate-x-px-50 translate-y-px-75">Transform Translate</div>
+
+<!-- Z-Index -->
+<div class="z-1 z-100 z-999">Z-Index Variants</div>
+
+<!-- Font & Flex -->
+<div class="font-16 fw-700">Font Size and Weight</div>
+<div class="f-grow-1 f-grow-2">Flex Grow</div>
+
+<!-- Text dynamic-width-characters  -->
+<div class="w-30ch w-50ch">Font Size and Weight</div>
+
+
+<!-- Background -->
+<div class="bg-pos-top bg-pos-center bg-pos-bottom bg-size-cover bg-size-contain">Background Position & Size</div>
+
+<!-- Placeholder Styling -->
+<input class="p-holder" placeholder="Styled Placeholder">

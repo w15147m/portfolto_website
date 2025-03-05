@@ -1,98 +1,72 @@
 <template>
-<div class="grid grid-cols-1 gap-4 sm:gap-5 lg:gap-6 w-full mt-5" >
-    <div class="card px-4 pb-4 sm:px-5 ">
-        <div class="is-scrollbar-hidden min-w-screen overflow-x-auto">
-            <div class="card px-4 pb-4 sm:px-5">
-            <div class="my-3 flex h-8 items-center justify-between">
-              <h2 class="font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100 lg:text-base">
-                <span class="pd-x-px-100">Zebra Table</span>
-                <span>Zebra Table</span>
-              </h2>
-            </div>
-            <div>
-              <div class="mt-5">
-                <div class="is-scrollbar-hidden min-w-full overflow-x-auto">
-                  <table class="is-zebra w-full text-left">
-                    <thead>
-                      <tr>
-                        <th class="whitespace-nowrap rounded-l-lg bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                          #
+<div>
+    <div class="flex items-center justify-between">
+        <h2 class="text-base font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100">
+            Users Table
+        </h2>
+    </div>
+    <div class="card mt-3">
+        <div class="is-scrollbar-hidden min-w-full overflow-x-auto">
+            <table class="is-hoverable w-full text-left">
+                <thead>
+                    <tr>
+                        <th class="whitespace-nowrap rounded-tl-lg bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+                            #
                         </th>
                         <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                          Name
+                            Avatar
                         </th>
                         <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                          Job
+                            Name
                         </th>
-                        <th class="whitespace-nowrap rounded-r-lg bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                          Favorite Color
+                        <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+                            Phone
                         </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td class="whitespace-nowrap rounded-l-lg px-4 py-3 sm:px-5">
-                          1
+                        <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+                            Address
+                        </th>
+                        <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+                            Updated At
+                        </th>
+                        <th class="whitespace-nowrap rounded-tr-lg bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-y border-transparent" v-for="item in data" :key="item.id">
+                        <td class="whitespace-nowrap px-4 py-3 sm:px-5">1</td>
+                        <td class="whitespace-nowrap px-4 py-3 sm:px-5">
+                            <div class="avatar flex size-10">
+                                <img class="mask is-squircle" :src="imgUrl" alt="avatar" />
+                            </div>
+                        </td>
+                        <td class="whitespace-nowrap px-4 py-3 font-medium text-slate-700 dark:text-navy-100 sm:px-5">
+                            {{ item.name }}
                         </td>
                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">
-                          Cy Ganderton
+                            {{ item.number }}
                         </td>
                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">
-                          Quality Control Specialist
-                        </td>
-                        <td class="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
-                          Blue
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="whitespace-nowrap rounded-l-lg px-4 py-3 sm:px-5">
-                          2
+                            {{ item.address }}
                         </td>
                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">
-                          Hart Hagerty
+                            {{ item.updated_at }}
                         </td>
                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">
-                          Desktop Support Technician
+                            <span><div class="flex justify-center space-x-2">
+                            <button @click="editItem" class="btn size-8 p-0 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
+                                <i class="fa fa-edit"></i>
+                            </button>
+                            <button @click="deleteItem" class="btn size-8 p-0 text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25">
+                                <i class="fa fa-trash-alt"></i>
+                            </button>
+                        </div></span>
                         </td>
-                        <td class="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
-                          Purple
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="whitespace-nowrap rounded-l-lg px-4 py-3 sm:px-5">
-                          3
-                        </td>
-                        <td class="whitespace-nowrap px-4 py-3 sm:px-5">
-                          Brice Swyre
-                        </td>
-                        <td class="whitespace-nowrap px-4 py-3 sm:px-5">
-                          Tax Accountant
-                        </td>
-                        <td class="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
-                          Red
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="whitespace-nowrap rounded-l-lg px-4 py-3 sm:px-5">
-                          4
-                        </td>
-                        <td class="whitespace-nowrap px-4 py-3 sm:px-5">
-                          Marjy Ferencz
-                        </td>
-                        <td class="whitespace-nowrap px-4 py-3 sm:px-5">
-                          Office Assistant I
-                        </td>
-                        <td class="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
-                          Crimson
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-           
-          </div>
+                    </tr>
+
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -102,20 +76,26 @@
 import {
     onMounted,
     ref
-} from 'vue';
+} from "vue";
 import {
     funcApi
-} from '@/common/utilities/apiFunctions';
+} from "@/common/utilities/apiFunctions";
+
+let imgUrl = ref(
+    "https://raw.githubusercontent.com/w15147m/bootstrap5admindashboardmultiple-main/refs/heads/main/images/app-logo.png"
+);
 let data = ref([]);
+
 const getData = async () => {
-    data = await funcApi.fetchData('/api/portfolios');
-}
+    const response = await funcApi.fetchData("/api/portfolios");
+    data.value = response;
+    console.log(data.value);
+};
 
 onMounted(() => {
     getData();
-})
+});
 </script>
 
 <style lang="scss" scoped>
-
-    </style>
+</style>

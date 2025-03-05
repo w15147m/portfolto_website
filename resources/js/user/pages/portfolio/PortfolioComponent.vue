@@ -1,8 +1,8 @@
 <template>
 <div>
     <div class="flex items-center justify-between">
-        <h2 class="text-base font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100">
-            Users Table
+        <h2 class="text-base font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100 pt-3">
+            Portfolio
         </h2>
     </div>
     <div class="card mt-3">

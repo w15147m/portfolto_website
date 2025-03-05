@@ -12,14 +12,14 @@
             <!-- Main Sections Links -->
             <div class="is-scrollbar-hidden flex grow flex-col space-y-4 overflow-y-auto pt-6">
                 <!-- Dashobards -->
-                <a href="dashboards-crm-analytics.html" class="flex size-11 items-center justify-center rounded-lg bg-primary/10 text-primary outline-none transition-colors duration-200 hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:bg-navy-600 dark:text-accent-light dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90" x-tooltip.placement.right="'Dashboards'">
+                <router-link to="/dashboard" class="flex size-11 items-center justify-center rounded-lg bg-primary/10 text-primary outline-none transition-colors duration-200 hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:bg-navy-600 dark:text-accent-light dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90" x-tooltip.placement.right="'Dashboards'">
                     <i class="fa-solid fa-house"></i>
-                </a>
+                </router-link>
 
                 <!-- Apps -->
-                <a href="apps-list.html" class="flex size-11 items-center justify-center rounded-lg outline-none transition-colors duration-200 hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25" x-tooltip.placement.right="'Portfolio'">
+                <router-link to="/dashboard/portfolio" class="flex size-11 items-center justify-center rounded-lg outline-none transition-colors duration-200 hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25" x-tooltip.placement.right="'Portfolio'">
                     <i class="fa-solid fa-user-tie "></i>
-                </a>
+                </router-link>
 
                 <!-- Pages And Layouts -->
                 <a href="pages-card-user-1.html" class="flex size-11 items-center justify-center rounded-lg outline-none transition-colors duration-200 hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25" x-tooltip.placement.right="'Pages & Layouts'">

@@ -1,11 +1,12 @@
 <template>
-<div class="grid grid-cols-1 gap-4 sm:gap-5 lg:gap-6 w-screen mt-5">
+<div class="grid grid-cols-1 gap-4 sm:gap-5 lg:gap-6 w-full mt-5" >
     <div class="card px-4 pb-4 sm:px-5 ">
         <div class="is-scrollbar-hidden min-w-screen overflow-x-auto">
             <div class="card px-4 pb-4 sm:px-5">
             <div class="my-3 flex h-8 items-center justify-between">
               <h2 class="font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100 lg:text-base">
-                Zebra Table
+                <span class="pd-x-px-100">Zebra Table</span>
+                <span>Zebra Table</span>
               </h2>
             </div>
             <div>
@@ -108,7 +109,6 @@ import {
 let data = ref([]);
 const getData = async () => {
     data = await funcApi.fetchData('/api/portfolios');
-    console.log(data);
 }
 
 onMounted(() => {

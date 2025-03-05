@@ -5,7 +5,6 @@ export const getHeader = function () {
         Accept: "application/json",
         ...(tokenData && { Authorization: `Bearer ${tokenData}` })
     };
-    console.log("Request Headers:", headers); 
     return headers;
 };
 

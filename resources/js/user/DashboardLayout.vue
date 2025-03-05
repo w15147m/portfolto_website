@@ -1,12 +1,10 @@
 <template>
-    <div>
         <SidebarComponent />
         <NavbarComponent />
         <main class="main-content w-screen px-[var(--margin-x)] pb-8">
             <router-view></router-view> <!-- Child routes will render here -->
             <!-- <FooterComponent /> -->
         </main>
-    </div>
 </template>
 
 <script>

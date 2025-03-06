@@ -1,9 +1,10 @@
 <template>
 <div>
-    <div class="flex items-center justify-between">
-        <h2 class="text-base font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100 pt-3">
-            Portfolio
+    <div class="flex items-center justify-between pt-3">
+        <h2 class="text-base font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100 ">
+            Profile
         </h2>
+        <PortfolioModal ref="portfolioModal"/>
     </div>
     <div class="card mt-3">
         <div class="is-scrollbar-hidden min-w-full overflow-x-auto">
@@ -34,7 +35,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="border-y border-transparent" v-for="item in data" :key="item.id">
+                    <tr class="border-y border-transparent" v-for="(item, index) in data" :key="index">
                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">1</td>
                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                             <div class="avatar flex size-10">
@@ -54,17 +55,19 @@
                             {{ item.updated_at }}
                         </td>
                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">
-                            <span><div class="flex justify-center space-x-2">
-                            <button @click="editItem" class="btn size-8 p-0 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
-                                <i class="fa fa-edit"></i>
-                            </button>
-                            <button @click="deleteItem" class="btn size-8 p-0 text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25">
-                                <i class="fa fa-trash-alt"></i>
-                            </button>
-                        </div></span>
+                            <span>
+                                <div class="flex justify-center space-x-2">
+                                    <button @click="editItem(item)" class="btn size-8 p-0 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
+                                        <i class="fa fa-edit"></i>
+                                    </button>
+                                    <button @click="deleteItem" class="btn size-8 p-0 text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25">
+                                        <i class="fa fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </span>
                         </td>
                     </tr>
-
+                    
                 </tbody>
             </table>
         </div>
@@ -73,13 +76,15 @@
 </template>
 
 <script setup>
+import PortfolioModal from "./components/PortfolioModal.vue";
+import {
+    funcApi
+} from "@/common/utilities/apiFunctions";
+
 import {
     onMounted,
     ref
 } from "vue";
-import {
-    funcApi
-} from "@/common/utilities/apiFunctions";
 
 let imgUrl = ref(
     "https://raw.githubusercontent.com/w15147m/bootstrap5admindashboardmultiple-main/refs/heads/main/images/app-logo.png"
@@ -87,11 +92,15 @@ let imgUrl = ref(
 let data = ref([]);
 
 const getData = async () => {
-    const response = await funcApi.fetchData("/api/portfolios");
-    data.value = response;
-    console.log(data.value);
+    let user = funcApi.getStoredObject("authUser");
+    const response = await funcApi.fetchData(`/api/portfolios/${user.id}`);
+    data.value.push(response);
+    // console.log(data.value);
 };
-
+const portfolioModal = ref(null);
+function editItem(item) {
+    portfolioModal.value.openModal(item);
+}
 onMounted(() => {
     getData();
 });

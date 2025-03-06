@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import DashboardLayout from '../user/DashboardLayout.vue';
 import HomeComponent from '../user/pages/HomeComponent.vue';
+import TestComponent from '../user/pages/TestComponent.vue';
 import PortfolioComponent from '../user/pages/portfolio/PortfolioComponent.vue';
 
 const routes = [
@@ -15,9 +16,14 @@ const routes = [
         component: HomeComponent,
       },
       {
-        path: "Portfolio",  // Default child route for /dashboard
+        path: "portfolio",  // Default child route for /dashboard
         name: "Portfolio",
         component: PortfolioComponent,
+      },
+      {
+        path: "test",  // Default child route for /dashboard
+        name: "test",
+        component: TestComponent,
       },
     ],
   },

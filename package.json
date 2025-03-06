@@ -10,7 +10,7 @@
         "@tailwindcss/vite": "^4.0.0",
         "alpinejs": "^3.14.8",
         "autoprefixer": "^10.4.2",
-        "axios": "^1.7.4",
+        "axios": "^1.8.1",
         "concurrently": "^9.0.1",
         "laravel-vite-plugin": "^1.2.0",
         "postcss": "^8.4.31",
@@ -22,6 +22,7 @@
     },
     "dependencies": {
         "@vitejs/plugin-vue": "^5.2.1",
+        "vform": "^2.1.2",
         "vue-router": "^4.5.0"
     }
 }

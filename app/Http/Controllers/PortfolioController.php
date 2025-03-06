@@ -24,8 +24,19 @@ class PortfolioController extends Controller
     // Store a new portfolio
     public function store(Request $request)
     {
+        $user = auth()->user();
+        $request->merge(['user_id' => $user->id]);
         $validatedData = $request->validate([
-            'user_id' => 'required|exists:users,id',
+            'user_id' => [
+                'required',
+                'exists:users,id',
+                function ($attribute, $value, $fail) use ($user) {
+                    // Use the method from the User model
+                    if ($user->portfolioExists()) {
+                        $fail('Portfolio already exists for this user.');
+                    }
+                },
+            ],
             'name' => 'required|string|max:255',
             'number' => 'required|string|max:20',
             'address' => 'required|string|max:255',
@@ -41,7 +52,6 @@ class PortfolioController extends Controller
     public function update(Request $request, $id)
     {
         $portfolio = Portfolio::findOrFail($id);
-
         $validatedData = $request->validate([
             'name' => 'string|max:255',
             'number' => 'string|max:20',

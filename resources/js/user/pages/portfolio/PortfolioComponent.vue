@@ -4,7 +4,7 @@
         <h2 class="text-base font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100 ">
             Profile
         </h2>
-        <PortfolioModal ref="portfolioModal"/>
+        <PortfolioModal ref="portfolioModal" :portfolio="data.length > 0 ? true : false"/>
     </div>
     <div class="card mt-3">
         <div class="is-scrollbar-hidden min-w-full overflow-x-auto">

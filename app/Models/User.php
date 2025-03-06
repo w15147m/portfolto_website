@@ -33,7 +33,10 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-
+    public function portfolioExists()
+    {
+        return Portfolio::where('user_id', $this->id)->exists();
+    }
     /**
      * Get the attributes that should be cast.
      *

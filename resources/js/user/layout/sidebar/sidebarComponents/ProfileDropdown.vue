@@ -6,7 +6,7 @@
     </button>
 
     <div v-show="isShowPopper" class="show  popper-root fixed" x-ref="popperRoot">
-        <div class="popper-box w-64 rounded-lg border border-slate-150 bg-white shadow-soft dark:border-navy-600 dark:bg-navy-700">
+        <div class="popper-box w-100 rounded-lg border border-slate-150 bg-white shadow-soft dark:border-navy-600 dark:bg-navy-700">
             <div class="flex items-center space-x-4 rounded-t-lg bg-slate-100 py-5 px-4 dark:bg-navy-800">
                 <div class="avatar size-14">
                     <img class="rounded-full" src="https://raw.githubusercontent.com/w15147m/bootstrap5admindashboardmultiple-main/refs/heads/main/images/app-logo.png" alt="avatar">
@@ -39,25 +39,44 @@ import {
     csrf,
 } from "@/config";
 import axios from 'axios';
-import { ref } from 'vue';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 
 let isShowPopper = ref(false);
+const popperRef = ref(null);
+const popperRoot = ref(null);
+
+const handleClickOutside = (event) => {
+    if (
+        isShowPopper.value && 
+        popperRef.value && 
+        popperRoot.value && 
+        !popperRef.value.contains(event.target) && 
+        !popperRoot.value.contains(event.target)
+    ) {
+        isShowPopper.value = false;
+    }
+};
+
+onMounted(() => {
+    window.addEventListener('click', handleClickOutside);
+});
+
+onBeforeUnmount(() => {
+    window.removeEventListener('click', handleClickOutside);
+});
+
 const logout = () => {
     axios.post('/logout', {
         _token: csrf,
     }).then(response => {
         console.log(response);
-        
         window.location.href = '/';
-
     }).catch(error => {
         console.log(error);
-        
     });
-}
-
-
+};
 </script>
+
 
 <style lang="scss" scoped>
 

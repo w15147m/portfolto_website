@@ -20,6 +20,9 @@
                 <router-link to="/dashboard/portfolio" class="flex size-11 items-center justify-center rounded-lg outline-none transition-colors duration-200 hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25" x-tooltip.placement.right="'Portfolio'">
                     <i class="fa-solid fa-user-tie "></i>
                 </router-link>
+                <router-link to="/dashboard/education" class="flex size-11 items-center justify-center rounded-lg outline-none transition-colors duration-200 hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25" x-tooltip.placement.right="'Education'">
+                    <i class="fa-solid fa-user-graduate"></i>
+                </router-link>
                 <router-link to="/dashboard/test" class="flex size-11 items-center justify-center rounded-lg outline-none transition-colors duration-200 hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25" x-tooltip.placement.right="'Blank Page'">
                     <i class="fa-solid fa-circle"></i>
                 </router-link>

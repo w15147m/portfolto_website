@@ -15,6 +15,14 @@ class PortfolioController extends Controller
     }
 
     // Show a single portfolio
+    public function userPortfolio($user_id)
+    {
+        $portfolio = Portfolio::where('user_id', $user_id)->get();
+        if ($portfolio->isEmpty()) {
+            return response()->json(['message' => 'No portfolio found'], 404);
+        }
+        return response()->json($portfolio);
+    }
     public function show($id)
     {
         $portfolio = Portfolio::with(['user', 'education', 'skills', 'services', 'projects', 'socialLinks'])->findOrFail($id);

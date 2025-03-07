@@ -23,4 +23,12 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         'projects' => ProjectController::class,
         'project-images' => ProjectImageController::class,
     ]);
+    Route::prefix('portfolio')->group(function () {
+        Route::get('user/{user_id}', [PortfolioController::class, 'userPortfolio']);
+      
+    });
+    Route::prefix('education')->group(function () {
+        Route::get('portfolio/{portfolio_id}', [EducationController::class, 'portfolioEducation']);
+      
+    });
 });

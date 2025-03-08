@@ -22,38 +22,40 @@
                     <label class="block">
                         <span>Degree</span>
                         <span class="relative mt-1.5 flex">
-                            <input v-model="form.degree" class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9" placeholder="Your Name" type="text" />
+                            <input v-model="form.degree" class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9" placeholder="Degree" type="text" />
                             <span class="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400">
-                                <i class="far fa-user text-base"></i>
+                                <i class="fa-solid fa-graduation-cap"></i>
                             </span>
                         </span>
                     </label>
                     <label class="block">
                         <span>Institution</span>
                         <span class="relative mt-1.5 flex">
-                            <input v-model="form.institution" class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9" placeholder="(999) 999-9999" type="tel" />
+                            <input v-model="form.institution" class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9" placeholder="Institution" type="text">
                             <span class="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400">
-                                <i class="fa fa-phone"></i>
+                                <i class="fa-solid fa-school"></i>
                             </span>
                         </span>
                     </label>
                     <label class="block">
                         <span>Field of study</span>
                         <span class="relative mt-1.5 flex">
-                            <input v-model="form.field_of_study" class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9" placeholder="(999) 999-9999" type="tel" />
+                            <input v-model="form.field_of_study" class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9" placeholder="Field of study" type="text" />
                             <span class="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400">
-                                <i class="fa fa-phone"></i>
+                                <i class="fa-solid fa-book"></i>
                             </span>
                         </span>
                     </label>
-
                     <label class="block">
-                        <span>image</span>
-                        <div class="card flex justify-center">
-                            <DatePicker v-model="date" showButtonBar />
-                        </div>
+                        <span>Start date</span>
+                        <VueDatePicker v-model="form.start_date" placeholder="Start date" text-input :auto-apply="true" />
                     </label>
-                    <div class="flex justify-start gap-1 ">
+                    <label class="block">
+                        <span>End date</span>
+                        <VueDatePicker v-model="form.end_date" placeholder="End date" text-input :auto-apply="true" />
+                    </label>
+
+                    <div class="flex justify-start gap-1  m-t-px-20">
                         <button @click="closeModal" class="btn bg-slate-150 font-medium text-slate-800 hover:bg-slate-200 focus:bg-slate-200 active:bg-slate-200/80 dark:bg-navy-500 dark:text-navy-50 dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90">
                             Cancel
                         </button>
@@ -78,15 +80,17 @@ import {
 import {
     funcApi
 } from "@/common/utilities/apiFunctions";
-import DatePicker from 'primevue/datepicker';
 const showModal = ref(false);
 const editMode = ref(false);
+const date = ref();
 const form = ref(new Form({
     id: '',
-    name: '',
-    number: '',
-    address: '',
-    image: null
+    institution: '',
+    degree: '',
+    field_of_study: '',
+    start_date: '',
+    end_date: null,
+    desc: null
 }));
 const props = defineProps({
     modelValue: {
@@ -104,7 +108,6 @@ const openModal = (data) => {
     showModal.value = true;
     editMode.value = true;
     form.value.fill(data);
-    console.log(form.value);
 };
 
 const handleFileUpload = (event) => {

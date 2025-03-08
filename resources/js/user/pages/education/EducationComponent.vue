@@ -4,8 +4,7 @@
         <h2 class="text-base font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100 ">
             Profile
         </h2>
-        <EducationModal ref="educationModal" v-model="data" :portfolio_id="portfolioId  || 0" />
-        <DeleteConfirmation v-model="data" ref="deleteConfirmation" />
+        <EducationModal ref="educationModal" v-model="data" :portfolio_id="portfolioId  || 0"/>
     </div>
     <div class="card mt-3">
         <div class="is-scrollbar-hidden min-w-full overflow-x-auto">
@@ -40,8 +39,7 @@
                 </thead>
                 <tbody>
                     <tr class="border-y border-transparent" v-for="(item, index) in data" :key="index">
-                        <td class="whitespace-nowrap px-4 py-3 sm:px-5">1</td>
-
+                        <td class="whitespace-nowrap px-4 py-3 sm:px-5">{{ index + 1 }}</td>
                         <td class="whitespace-nowrap px-4 py-3 font-medium text-slate-700 dark:text-navy-100 sm:px-5">
                             {{ item.degree}}
                         </td>
@@ -56,11 +54,9 @@
                         </td>
                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                             {{ item.start_date}}
-
                         </td>
                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                             {{ item.end_date}}
-
                         </td>
                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                             <span>
@@ -68,18 +64,18 @@
                                     <button @click="editItem(item)" class="btn size-8 p-0 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
                                         <i class="fa fa-edit"></i>
                                     </button>
-                                    <button @click="deleteItem" class="btn size-8 p-0 text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25">
+                                    <button @click="deleteItem(item)" class="btn size-8 p-0 text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25">
                                         <i class="fa fa-trash-alt"></i>
                                     </button>
                                 </div>
                             </span>
                         </td>
                     </tr>
-
                 </tbody>
             </table>
         </div>
     </div>
+    <DeleteConfirmation v-model="data" ref="deleteConfirmation"/>
 </div>
 </template>
 
@@ -96,28 +92,32 @@ import {
 import {
     usePortfolioStore
 } from "@/stores/portfolio";
+import DeleteConfirmation from "@/common/component/DeleteConfirmation.vue";
 let imgUrl = ref(
     "https://raw.githubusercontent.com/w15147m/bootstrap5admindashboardmultiple-main/refs/heads/main/images/app-logo.png"
 );
 const portfolioStore = usePortfolioStore();
 let data = ref([]);
-
+let portfolioId = '';
 const getData = async () => {
-    let portfolioId = portfolioStore.getPortfolioId; 
+     portfolioId = portfolioStore.getPortfolioId; 
     if (!portfolioId) {
         await portfolioStore.fetchPortfolio(); 
         portfolioId = portfolioStore.getPortfolioId;
     }
     const response = await funcApi.fetchData(`/api/education/portfolio/${portfolioId}`);
     data.value = response;
-    console.log(data.value);
-    
 };
 const educationModal = ref(null);
+const deleteConfirmation = ref(null);
 
 function editItem(item) {
-  
     educationModal.value.openModal(item);
+}
+function deleteItem(item) {
+    let url = '/api/education/' + item.id;
+    item.name = item.degree;
+    deleteConfirmation.value.openModal(item, url);
 }
 onMounted(() => {
     

@@ -76,6 +76,7 @@ import {
 import {
     toast
 } from "vue3-toastify";
+import 'vue3-toastify/dist/index.css';
 const showModal = ref(false);
 const editMode = ref(false);
 const form = ref(

@@ -14,7 +14,7 @@ class Education extends Model
         'portfolio_id',
         'institution',
         'start_date',
-        'end_dat',
+        'end_date',
         'field_of_study',
         'desc'
     ];

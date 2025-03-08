@@ -3,7 +3,6 @@
     <button @click="showModal = true" class="btn bg-primary/10 font-medium text-primary hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:bg-accent-light/10 dark:text-accent-light dark:hover:bg-accent-light/20 dark:focus:bg-accent-light/20 dark:active:bg-accent-light/25">
         Add New
     </button>
-
     <teleport to="#x-teleport-target">
         <div v-if="showModal" class="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden px-4 py-6 sm:px-5" role="dialog" @keydown.esc="closeModal">
             <div class="absolute inset-0 bg-slate-900/60 transition-opacity duration-300" @click="closeModal"></div>
@@ -46,6 +45,7 @@
                             </span>
                         </span>
                     </label>
+                    
                     <label class="block">
                         <span>Start date</span>
                         <VueDatePicker v-model="form.start_date" placeholder="Start date" text-input :auto-apply="true" />
@@ -54,7 +54,11 @@
                         <span>End date</span>
                         <VueDatePicker v-model="form.end_date" placeholder="End date" text-input :auto-apply="true" />
                     </label>
-
+                    <label class="block">
+                        <span>Desc</span>
+                        <textarea v-model="form.desc" rows="4" placeholder="Description" class="form-textarea mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent p-2.5"></textarea>
+                 
+                    </label>
                     <div class="flex justify-start gap-1  m-t-px-20">
                         <button @click="closeModal" class="btn bg-slate-150 font-medium text-slate-800 hover:bg-slate-200 focus:bg-slate-200 active:bg-slate-200/80 dark:bg-navy-500 dark:text-navy-50 dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90">
                             Cancel
@@ -74,18 +78,23 @@
 import {
     ref
 } from 'vue';
+
 import {
     Form
 } from 'vform';
+import {
+    toast
+} from "vue3-toastify";
+import 'vue3-toastify/dist/index.css';
 import {
     funcApi
 } from "@/common/utilities/apiFunctions";
 const showModal = ref(false);
 const editMode = ref(false);
-const date = ref();
 const form = ref(new Form({
     id: '',
     institution: '',
+    portfolio_id: '',
     degree: '',
     field_of_study: '',
     start_date: '',
@@ -97,6 +106,10 @@ const props = defineProps({
         type: Array,
         required: true,
     },
+    portfolio_id: {
+        type: Number,
+        default: 0,
+    },
 });
 const emit = defineEmits(['update:modelValue']);
 const closeModal = () => {
@@ -105,9 +118,11 @@ const closeModal = () => {
     form.value.reset();
 };
 const openModal = (data) => {
+    
     showModal.value = true;
     editMode.value = true;
     form.value.fill(data);
+    console.log(form.value);
 };
 
 const handleFileUpload = (event) => {
@@ -115,28 +130,34 @@ const handleFileUpload = (event) => {
 };
 
 const submitForm = () => {
+    console.log(form.value);
+    
+    form.value.portfolio_id = props.portfolio_id;
     if (editMode.value) {
-        funcApi.put(`/api/portfolios/${form.value.id}`, form.value)
+        funcApi.put(`/api/education/${form.value.id}`, form.value)
             .then((response) => {
-                const updatedPortfolio = response.data.portfolio;
+                const updatedPortfolio = response.data.education;
                 const updatedValue = props.modelValue.map((item) =>
-                    item.id === updatedPortfolio.id ? updatedPortfolio : item
+                    item.id === updatedPortfolio?.id ? updatedPortfolio : item
                 );
                 emit('update:modelValue', updatedValue);
                 toast.success(response.data.message, {
                     position: toast.POSITION.TOP_RIGHT,
                 });
+               
+                
                 closeModal();
             });
     } else {
-        form.value.post('/api/portfolios')
+        funcApi.post('/api/education', form.value)
             .then((response) => {
-                const updatedPortfolio = response.data.portfolio;
-                const updatedValue = props.modelValue.push(updatedPortfolio);
-                emit('update:modelValue', updatedValue);
+                const updatedEducation = response.data.education;
+                const updatedValue = props.modelValue.unshift(updatedEducation);
+                // emit('update:modelValue', updatedValue);
                 toast.success(response.data.message, {
                     position: toast.POSITION.TOP_RIGHT,
                 });
+
                 closeModal();
             });
     }

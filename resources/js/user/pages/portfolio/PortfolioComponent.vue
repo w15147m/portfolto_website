@@ -35,8 +35,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="border-y border-transparent" v-for="(item, index) in data" :key="index">
-                        <td class="whitespace-nowrap px-4 py-3 sm:px-5">1</td>
+                    <tr class="border-y border-transparent" v-for="(item, index) in data" :key="index" > 
+                        <td class="whitespace-nowrap px-4 py-3 sm:px-5">{{ index + 1}}</td>
                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                             <div class="avatar flex size-10">
                                 <img class="mask is-squircle" :src="imgUrl" alt="avatar" />

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Portfolio;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class PortfolioController extends Controller
@@ -10,14 +11,18 @@ class PortfolioController extends Controller
     // Display a list of portfolios
     public function index()
     {
-        $portfolios = Portfolio::get();
-        return response()->json($portfolios);
+      
+        $portfolios = Portfolio::where('user_id', 1)
+            ->with(['user', 'education', 'skills', 'services', 'projects', 'socialLinks'])
+            ->first();
+        // return $portfolios;
+            return view('portfolioThemes.theme', compact('portfolios'));
     }
 
     // Show a single portfolio
     public function userPortfolio($user_id)
     {
-        $portfolio = Portfolio::where('user_id', $user_id)->get();
+        $portfolio = Portfolio::where('user_id', $user_id) ->with(['user', 'education', 'skills', 'services', 'projects', 'socialLinks'])->get();
         if ($portfolio->isEmpty()) {
             return response()->json(['message' => 'No portfolio found'], 404);
         }
@@ -32,7 +37,7 @@ class PortfolioController extends Controller
     // Store a new portfolio
     public function store(Request $request)
     {
-        $user = auth()->user();
+        $user = Auth::user();
         $request->merge(['user_id' => $user->id]);
         $validatedData = $request->validate([
             'user_id' => [

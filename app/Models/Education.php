@@ -9,7 +9,18 @@ class Education extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['portfolio_id', 'degree', 'institution', 'year'];
+    protected $fillable = [
+        'degree',
+        'portfolio_id',
+        'institution',
+        'start_date',
+        'end_dat',
+        'field_of_study',
+        'desc'
+    ];
 
-    public function portfolio() { return $this->belongsTo(Portfolio::class); }
+    public function portfolio()
+    {
+        return $this->belongsTo(Portfolio::class);
+    }
 }

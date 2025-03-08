@@ -4,7 +4,7 @@
         <h2 class="text-base font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100 ">
             Profile
         </h2>
-        <EducationModal ref="educationModal"/>
+        <EducationModal ref="educationModal" v-model="data"/>
     </div>
     <div class="card mt-3">
         <div class="is-scrollbar-hidden min-w-full overflow-x-auto">
@@ -109,7 +109,8 @@ const getData = async () => {
     }
     const response = await funcApi.fetchData(`/api/education/portfolio/${portfolioId}`);
     data.value = response;
-    // console.log(data.value);
+    console.log(data.value);
+    
 };
 const educationModal = ref(null);
 

@@ -4,7 +4,7 @@
         <h2 class="text-base font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100 ">
             Profile
         </h2>
-        <PortfolioModal ref="portfolioModal" :portfolio="data.length > 0 ? true : false"/>
+        <PortfolioModal ref="portfolioModal" v-model="data" :portfolio="data.length > 0 ? true : false"/>
     </div>
     <div class="card mt-3">
         <div class="is-scrollbar-hidden min-w-full overflow-x-auto">
@@ -77,7 +77,7 @@
 
 <script setup>
 import PortfolioModal from "./components/PortfolioModal.vue";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { usePortfolioStore } from "@/stores/portfolio";
 
 let imgUrl = ref(
@@ -89,7 +89,8 @@ const data = ref([]);
 
 const getData = async () => {
   await portfolioStore.fetchPortfolio(); 
-  data.value = portfolioStore.getPortfolioData; 
+  data.value = [...portfolioStore.getPortfolioData];
+
 };
 
 const portfolioModal = ref(null);

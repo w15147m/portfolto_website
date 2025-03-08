@@ -16,4 +16,20 @@ class EducationController extends Controller
         }
         return response()->json($education);
     }
+    public function update(Request $request, $id)
+    {
+        $education = Education::findOrFail($id);
+        $validatedData = $request->validate([
+            'portfolio_id' => 'string|max:255',
+            'portfolio_id' => 'string|max:255',
+            'degree' => 'string|max:20',
+            'institution' => 'string|max:255',
+            'institution' => 'string|max:255',
+            'desc' => 'string|max:255',
+            'desc' => 'string|max:255',
+
+        ]);
+        $education->update($validatedData);
+        return response()->json(['message' => 'Portfolio updated successfully!', 'portfolio' => $education]);
+    }
 }

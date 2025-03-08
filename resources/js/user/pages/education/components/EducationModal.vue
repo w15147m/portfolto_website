@@ -1,6 +1,6 @@
 <template>
 <div>
-    <button  @click="showModal = true" class="btn bg-primary/10 font-medium text-primary hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:bg-accent-light/10 dark:text-accent-light dark:hover:bg-accent-light/20 dark:focus:bg-accent-light/20 dark:active:bg-accent-light/25">
+    <button @click="showModal = true" class="btn bg-primary/10 font-medium text-primary hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:bg-accent-light/10 dark:text-accent-light dark:hover:bg-accent-light/20 dark:focus:bg-accent-light/20 dark:active:bg-accent-light/25">
         Add New
     </button>
 
@@ -20,32 +20,37 @@
                 </div>
                 <form @submit.prevent="submitForm" class="px-4 py-4 sm:px-5">
                     <label class="block">
-                        <span>Name</span>
+                        <span>Degree</span>
                         <span class="relative mt-1.5 flex">
-                            <input v-model="form.name" class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9" placeholder="Your Name" type="text" />
+                            <input v-model="form.degree" class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9" placeholder="Your Name" type="text" />
                             <span class="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400">
                                 <i class="far fa-user text-base"></i>
                             </span>
                         </span>
                     </label>
                     <label class="block">
-                        <span>Phone number</span>
+                        <span>Institution</span>
                         <span class="relative mt-1.5 flex">
-                            <input v-model="form.number" class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9" placeholder="(999) 999-9999" type="tel" />
+                            <input v-model="form.institution" class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9" placeholder="(999) 999-9999" type="tel" />
                             <span class="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400">
                                 <i class="fa fa-phone"></i>
                             </span>
                         </span>
                     </label>
-                    <!-- Address -->
                     <label class="block">
-                        <span>Address</span>
-                        <textarea v-model="form.address" rows="4" placeholder="Your Address (Area and Street)" class="form-textarea mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent p-2.5"></textarea>
+                        <span>Field of study</span>
+                        <span class="relative mt-1.5 flex">
+                            <input v-model="form.field_of_study" class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9" placeholder="(999) 999-9999" type="tel" />
+                            <span class="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400">
+                                <i class="fa fa-phone"></i>
+                            </span>
+                        </span>
                     </label>
+
                     <label class="block">
-                        <span>Phone number</span>
-                        <div class="filepond fp-bordered">
-                            <input type="file" x-init="$el._x_filepond = FilePond.create($el)" multiple />
+                        <span>image</span>
+                        <div class="card flex justify-center">
+                            <DatePicker v-model="date" showButtonBar />
                         </div>
                     </label>
                     <div class="flex justify-start gap-1 ">
@@ -73,7 +78,7 @@ import {
 import {
     funcApi
 } from "@/common/utilities/apiFunctions";
-
+import DatePicker from 'primevue/datepicker';
 const showModal = ref(false);
 const editMode = ref(false);
 const form = ref(new Form({
@@ -83,8 +88,13 @@ const form = ref(new Form({
     address: '',
     image: null
 }));
-
-
+const props = defineProps({
+    modelValue: {
+        type: Array,
+        required: true,
+    },
+});
+const emit = defineEmits(['update:modelValue']);
 const closeModal = () => {
     editMode.value = false;
     showModal.value = false;
@@ -103,15 +113,30 @@ const handleFileUpload = (event) => {
 
 const submitForm = () => {
     if (editMode.value) {
-        funcApi.put(`/api/portfolios/${form.value.id}` , form.value).then(() => {
-            closeModal();
-        });
-    }else {
-        form.value.post('/api/portfolios').then(() => {
-            closeModal();
-        });
+        funcApi.put(`/api/portfolios/${form.value.id}`, form.value)
+            .then((response) => {
+                const updatedPortfolio = response.data.portfolio;
+                const updatedValue = props.modelValue.map((item) =>
+                    item.id === updatedPortfolio.id ? updatedPortfolio : item
+                );
+                emit('update:modelValue', updatedValue);
+                toast.success(response.data.message, {
+                    position: toast.POSITION.TOP_RIGHT,
+                });
+                closeModal();
+            });
+    } else {
+        form.value.post('/api/portfolios')
+            .then((response) => {
+                const updatedPortfolio = response.data.portfolio;
+                const updatedValue = props.modelValue.push(updatedPortfolio);
+                emit('update:modelValue', updatedValue);
+                toast.success(response.data.message, {
+                    position: toast.POSITION.TOP_RIGHT,
+                });
+                closeModal();
+            });
     }
-
 
 };
 defineExpose({
@@ -119,7 +144,6 @@ defineExpose({
 });
 </script>
 
-    
 <style scoped>
 /* Add any additional styles if needed */
 </style>

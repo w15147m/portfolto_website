@@ -7,7 +7,7 @@
     <teleport to="#x-teleport-target">
         <div v-if="showModal" class="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden px-4 py-6 sm:px-5" role="dialog" @keydown.esc="closeModal">
             <div class="absolute inset-0 bg-slate-900/60 transition-opacity duration-300" @click="closeModal"></div>
-            <div class="relative w-full max-w-lg origin-top rounded-lg bg-white transition-all duration-300 dark:bg-navy-700">
+            <div class="relative w-full max-w-lg origin-top rounded-lg bg-white transition-all duration-300 dark:bg-navy-700 ">
                 <div class="flex justify-between rounded-t-lg bg-slate-200 px-4 py-3 dark:bg-navy-800 sm:px-5">
                     <h3 class="text-base font-medium text-slate-700 dark:text-navy-100">
                         {{ editMode ? "Edit" : "Add New" }} Portfolio
@@ -18,36 +18,45 @@
                         </svg>
                     </button>
                 </div>
-                <form @submit.prevent="submitForm" class="px-4 py-4 sm:px-5">
-                    <label class="block">
-                        <span>Name</span>
-                        <span class="relative mt-1.5 flex">
-                            <input v-model="form.name" class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9" placeholder="Your Name" type="text" />
-                            <span class="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400">
-                                <i class="far fa-user text-base"></i>
+                <form @submit.prevent="submitForm" class="px-4 py-4 grid grid-cols-2 gap-2">
+                    <div class="">
+                        <label class="block">
+                            <span>Image</span>
+                            <div class="filepond fp-bordered mt-1.5">
+                                <input type="file" @change="handleFileChange($event)" x-init="$el._x_filepond = FilePond.create($el)" />
+                            </div>
+                        </label>
+                    </div>
+                    <div class="">
+                        <label class="block">
+                            <span>Name</span>
+                            <span class="relative mt-1.5 flex">
+                                <input v-model="form.name" class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9" placeholder="Your Name" type="text" />
+                                <span class="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400">
+                                    <i class="far fa-user text-base"></i>
+                                </span>
                             </span>
-                        </span>
-                    </label>
-                    <label class="block">
-                        <span>Phone number</span>
-                        <span class="relative mt-1.5 flex">
-                            <input v-model="form.number" class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9" placeholder="(999) 999-9999" type="tel" />
-                            <span class="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400">
-                                <i class="fa fa-phone"></i>
+                        </label>
+                        <label class="block">
+                            <span>Phone number</span>
+                            <span class="relative mt-1.5 flex">
+                                <input v-model="form.number" class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9" placeholder="(999) 999-9999" type="tel" />
+                                <span class="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400">
+                                    <i class="fa fa-phone"></i>
+                                </span>
                             </span>
-                        </span>
-                    </label>
-                    <!-- Address -->
-                    <label class="block">
-                        <span>Address</span>
-                        <textarea v-model="form.address" rows="4" placeholder="Your Address (Area and Street)" class="form-textarea mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent p-2.5"></textarea>
-                    </label>
-                    <label class="block">
-                        <span>Phone number</span>
-                        <div class="filepond fp-bordered">
-                            <input type="file" x-init="$el._x_filepond = FilePond.create($el)" multiple />
-                        </div>
-                    </label>
+                        </label>
+                        <!-- Address -->
+                        <label class="block">
+                            <span>Address</span>
+                            <textarea v-model="form.address" rows="4" placeholder="Your Address (Area and Street)" class="form-textarea mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent p-2.5"></textarea>
+                        </label>
+                        <label class="block">
+                            <span>Description </span>
+                            <textarea v-model="form.desc" rows="4" placeholder="Your Address (Area and Street)" class="form-textarea mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent p-2.5"></textarea>
+
+                        </label>
+                    </div>
                     <div class="flex justify-start gap-1">
                         <button @click="closeModal" class="btn bg-slate-150 font-medium text-slate-800 hover:bg-slate-200 focus:bg-slate-200 active:bg-slate-200/80 dark:bg-navy-500 dark:text-navy-50 dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90">
                             Cancel
@@ -86,6 +95,7 @@ const form = ref(
         number: "",
         address: "",
         image: null,
+        desc: "",
     })
 );
 
@@ -100,6 +110,12 @@ const props = defineProps({
         required: true,
     },
 });
+const   handleFileChange = (event) => {
+console.log(event.target.files[0]);
+
+    // this.form.image = event.target.files[0]; // or event.target.files for multiple files
+  }
+
 
 const emit = defineEmits(['update:modelValue']);
 

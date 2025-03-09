@@ -14,23 +14,12 @@
                         <th class="whitespace-nowrap rounded-tl-lg bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                             #
                         </th>
-                        <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                            Degree
+                       
+                        <th  class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+                            Avatar    
                         </th>
-                        <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                            Description
-                        </th>
-                        <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                            field_of_study
-                        </th>
-                        <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                            institution
-                        </th>
-                        <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                            start_date
-                        </th>
-                        <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                            end_date
+                        <th v-for="column in columns" :key="column.key" class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+                            {{ column }}
                         </th>
                         <th class="whitespace-nowrap rounded-tr-lg bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                             Action
@@ -38,26 +27,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="border-y border-transparent" v-for="(item, index) in data" :key="index" >
+                    <tr class="border-y border-transparent " v-for="(item, index) in data" :key="index" style="border-top: 1px solid ;">
                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">{{ index + 1 }}</td>
-                        <td class="whitespace-nowrap px-4 py-3 font-medium text-slate-700 dark:text-navy-100 sm:px-5">
-                            {{ item.degree}}
-                        </td>
                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">
-                            {{ item.desc }}
+                            <div class="avatar flex size-10">
+                                <img class="mask is-squircle" :src="item.image" alt="avatar" />
+                            </div>
                         </td>
-                        <td class="whitespace-nowrap px-4 py-3 sm:px-5">
-                            {{ item.field_of_study }}
+                        <td class="whitespace-nowrap px-4 py-3 sm:px-5" v-for="column in columns" :key="column.key">
+                            {{ item[column] }}
                         </td>
-                        <td class="whitespace-nowrap px-4 py-3 sm:px-5">
-                            {{ item.institution }}
-                        </td>
-                        <td class="whitespace-nowrap px-4 py-3 sm:px-5">
-                            {{ item.start_date}}
-                        </td>
-                        <td class="whitespace-nowrap px-4 py-3 sm:px-5">
-                            {{ item.end_date}}
-                        </td>
+                    
                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                             <span>
                                 <div class="flex justify-center space-x-2">
@@ -80,7 +60,7 @@
 </template>
 
 <script setup>
-import EducationModal from "./components/EducationModal.vue";
+import EducationModal from "./components/ExperienceModal.vue";
 import {
     funcApi
 } from "@/common/utilities/apiFunctions";
@@ -99,13 +79,14 @@ let imgUrl = ref(
 const portfolioStore = usePortfolioStore();
 let data = ref([]);
 let portfolioId = '';
+let columns = ref([  'company', 'position',  'desc' , 'start_date', 'end_date']);
 const getData = async () => {
      portfolioId = portfolioStore.getPortfolioId; 
     if (!portfolioId) {
         await portfolioStore.fetchPortfolio(); 
         portfolioId = portfolioStore.getPortfolioId;
     }
-    const response = await funcApi.fetchData(`/api/education/portfolio/${portfolioId}`);
+    const response = await funcApi.fetchData(`/api/experience/portfolio/${portfolioId}`);
     data.value = response;
 };
 const educationModal = ref(null);
@@ -115,7 +96,7 @@ function editItem(item) {
     educationModal.value.openModal(item);
 }
 function deleteItem(item) {
-    let url = '/api/education/' + item.id;
+    let url = '/api/experience/' + item.id;
     item.name = item.degree;
     deleteConfirmation.value.openModal(item, url);
 }

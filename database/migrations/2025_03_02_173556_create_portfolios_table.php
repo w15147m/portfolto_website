@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('name');  // Make sure this line exists
-            $table->string('number');
-            $table->string('address');
-            $table->string('image');
+            $table->string('number')->nullable();
+            $table->string('address')->nullable();
+            $table->string('image')->nullable();
+            $table->text('desc')->nullable();
             $table->timestamps();
         });
     }

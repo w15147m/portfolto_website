@@ -5,24 +5,24 @@ namespace App\Http\Controllers;
 use App\Models\Portfolio;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Traits\ManageFiles;
 
 class PortfolioController extends Controller
 {
+    use ManageFiles;
     // Display a list of portfolios
     public function index()
     {
-      
         $portfolios = Portfolio::where('user_id', 1)
             ->with(['user', 'education', 'skills', 'services', 'projects', 'socialLinks'])
             ->first();
-        // return $portfolios;
-            return view('portfolioThemes.theme', compact('portfolios'));
+        return view('portfolioThemes.theme', compact('portfolios'));
     }
 
     // Show a single portfolio
     public function userPortfolio($user_id)
     {
-        $portfolio = Portfolio::where('user_id', $user_id) ->with(['user', 'education', 'skills', 'services', 'projects', 'socialLinks'])->get();
+        $portfolio = Portfolio::where('user_id', $user_id)->with(['user', 'education', 'skills', 'services', 'projects', 'socialLinks'])->get();
         if ($portfolio->isEmpty()) {
             return response()->json(['message' => 'No portfolio found'], 404);
         }
@@ -40,16 +40,7 @@ class PortfolioController extends Controller
         $user = Auth::user();
         $request->merge(['user_id' => $user->id]);
         $validatedData = $request->validate([
-            'user_id' => [
-                'required',
-                'exists:users,id',
-                function ($attribute, $value, $fail) use ($user) {
-                    // Use the method from the User model
-                    if ($user->portfolioExists()) {
-                        $fail('Portfolio already exists for this user.');
-                    }
-                },
-            ],
+            'user_id' => ['required','exists:users,id'],
             'name' => 'required|string|max:255',
             'number' => 'required|string|max:20',
             'address' => 'required|string|max:255',
@@ -70,6 +61,7 @@ class PortfolioController extends Controller
             'number' => 'string|max:20',
             'address' => 'string|max:255',
             'image' => 'string|max:255',
+            'desc' => 'string|max:255',
         ]);
 
         $portfolio->update($validatedData);

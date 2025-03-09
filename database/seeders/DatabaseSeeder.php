@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
                 'number' => '1234567890',
                 'address' => '123 Example Street',
                 'image' => $imageUrl,
+                'desc' => 'Description for Portfolio for User' . $i,
             ]);
         }
 
@@ -95,10 +96,10 @@ class DatabaseSeeder extends Seeder
             }
         }
 
-        // Create Experience Entries
+        // Create experiences Entries
         foreach ($portfolioIds as $portfolioId) {
             for ($i = 1; $i <= 2; $i++) {
-                DB::table('experience')->insert([
+                DB::table('experiences')->insert([
                     'portfolio_id' => $portfolioId,
                     'company' => 'Company ' . $i,
                     'position' => 'Position ' . $i,

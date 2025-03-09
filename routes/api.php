@@ -31,4 +31,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::get('portfolio/{portfolio_id}', [EducationController::class, 'portfolioEducation']);
       
     });
+    Route::prefix('experience')->group(function () {
+        Route::get('portfolio/{portfolio_id}', [ExperienceController::class, 'portfolioExperience']);
+      
+    });
 });

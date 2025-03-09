@@ -16,6 +16,7 @@ class Portfolio extends Model
         'number',
         'address',
         'image',
+        'desc',
     ];
 
     // Define relationship with User

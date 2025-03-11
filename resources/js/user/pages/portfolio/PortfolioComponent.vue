@@ -42,7 +42,8 @@
                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">{{ index + 1}}</td>
                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                             <div class="avatar flex size-10">
-                                <img class="mask is-squircle" :src="imgUrl" alt="avatar" />
+                                <!-- cdnUrl -->
+                                <img class="mask is-squircle" :src="item?.image ? `${cdnUrl}/${item.image}?${Date.now()}` :  imgUrl" alt="avatar" />
                             </div>
                         </td>
                         <td class="whitespace-nowrap px-4 py-3 font-medium text-slate-700 dark:text-navy-100 sm:px-5">
@@ -85,6 +86,7 @@
 import PortfolioModal from "./components/PortfolioModal.vue";
 import { onMounted, ref, watch } from "vue";
 import { usePortfolioStore } from "@/stores/portfolio";
+import {cdnUrl} from "@/config.js";
 
 let imgUrl = ref(
   "https://raw.githubusercontent.com/w15147m/bootstrap5admindashboardmultiple-main/refs/heads/main/images/app-logo.png"

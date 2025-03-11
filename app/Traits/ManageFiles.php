@@ -5,9 +5,9 @@ use Illuminate\Support\Facades\Storage;
 trait ManageFiles
 {
     protected $disk = "public";
-    public function uploadImg($path, $file)
+    public function uploadImg($path, $file, $fileName)
     {
-        return Storage::disk($this->disk)->put($path, $file);
+        return $file->storeAs($path, $fileName, $this->disk);
     }
     public function deleteFile($path)
     {

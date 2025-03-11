@@ -162,7 +162,7 @@ const submitForm = () => {
   
     if (editMode.value) {
         funcApi
-            .put(`/api/portfolios/${form.value.id}`, formData, {
+            .post(`/api/portfolio/update/${form.value.id}`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },

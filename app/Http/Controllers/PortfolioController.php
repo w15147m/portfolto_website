@@ -6,7 +6,7 @@ use App\Models\Portfolio;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Traits\ManageFiles;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class PortfolioController extends Controller
 {
@@ -54,9 +54,10 @@ class PortfolioController extends Controller
     }
 
     // Update an existing portfolio
-    public function update(Request $request, $id)
+    public function updatePortfolio(Request $request, $id)
     {
         $portfolio = Portfolio::findOrFail($id);
+    
         $validatedData = $request->validate([
             'name' => 'string|max:255',
             'number' => 'string|max:20',
@@ -64,24 +65,31 @@ class PortfolioController extends Controller
             'desc' => 'string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-        Log::info('Current portfolio image: ' . $request->file('image'));
+        
         if ($request->hasFile('image')) {
-            $oldImagePath = public_path($portfolio->image);
-            if (file_exists($oldImagePath)) {
-                unlink($oldImagePath);
+            if ($portfolio->image) {
+                Storage::disk('public')->delete($portfolio->image);
             }
     
             $image = $request->file('image');
-            $filename = 'portfolio_' . $portfolio->id . '.' . $image->getClientOriginalExtension();
-            $path = 'profile/portfolio' . $filename;
-            $this->uploadImg($path, $image);
-            $validatedData['image'] = $path;
+            $filename = 'portfolio_' . $portfolio->id . '.png' ;
+            $path = 'profile/portfolio/';
+            $this->uploadImg($path, $image, $filename);
+            $validatedData['image'] = $path.$filename;
+            
         }
+    
         $portfolio->update($validatedData);
+    
         return response()->json([
             'message' => 'Portfolio updated successfully!',
             'portfolio' => $portfolio,
         ]);
+    }
+    
+    public function update(Request $request, $id)
+    {
+        $portfolio = Portfolio::findOrFail($id);
     }
     
     

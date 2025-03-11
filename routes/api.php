@@ -26,7 +26,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     // pi/portfolios/1
     Route::prefix('portfolio')->group(function () {
         Route::get('user/{user_id}', [PortfolioController::class, 'userPortfolio']);
-        Route::post('{portfolio_id}', [PortfolioController::class, 'updatePortfolio']);
+        Route::post('update/{portfolio_id}', [PortfolioController::class, 'updatePortfolio']);
       
     });
     Route::prefix('education')->group(function () {

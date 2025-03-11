@@ -22,9 +22,7 @@
                     <div class="">
                         <label class="block">
                             <span>Image</span>
-                            <div class="filepond fp-bordered mt-1.5">
-                                <FilePond name="image" accepted-file-types="image/jpeg, image/png" allow-multiple="false" :files="filePondFiles" @updatefiles="handleFileUpload" label-idle="Drop image here or click to browse" />
-                            </div>
+                            <FilePondComponent :image="form.image"  @file-uploaded="handleFileUpload" />
                         </label>
                     </div>
                     <div class="">
@@ -86,18 +84,9 @@ import {
     toast
 } from "vue3-toastify";
 import 'vue3-toastify/dist/index.css';
-
+import FilePondComponent from "@/common/component/FilePondComponent.vue";
 import 'vue3-toastify/dist/index.css';
-import {cdnUrl} from "@/config.js";
-// Import FilePond and its plugins
-import vueFilePond from "vue-filepond";
-import "filepond/dist/filepond.min.css";
-import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
-import FilePondPluginImagePreview from "filepond-plugin-image-preview";
-import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
-const filePondFiles = ref([]);
-// Create FilePond component with plugins
-const FilePond = vueFilePond(FilePondPluginFileValidateType, FilePondPluginImagePreview);
+
 
 const showModal = ref(false);
 const editMode = ref(false);
@@ -138,25 +127,12 @@ const openModal = (data) => {
     showModal.value = true;
     editMode.value = true;
     form.value.fill(data);
-    if (data.image) {
-        form.value.image = cdnUrl+'/'+ data.image;
-        console.log(form.value.image);
-        
-        filePondFiles.value = [{
-            source: cdnUrl+'/'+ data.image,
-            
-        }];
-    } else {
-        filePondFiles.value = [];
-    }
+    console.log(form.value);
+    
 };
 
-const handleFileUpload = (files) => {
-    if (files.length > 0) {
-        form.value.image = files[0].file; // Assign the file to form
-    } else {
-        form.value.image = null; // Reset if no file is selected
-    }
+const handleFileUpload = (file) => {
+    form.value.image = file;
 };
 
 const submitForm = () => {

@@ -23,7 +23,7 @@
                         <label class="block">
                             <span>Image</span>
                             <div class="filepond fp-bordered mt-1.5">
-                                <input type="file" @change="handleFileChange($event)" x-init="$el._x_filepond = FilePond.create($el)" />
+                                <FilePond name="image" accepted-file-types="image/jpeg, image/png" allow-multiple="false" @updatefiles="handleFileUpload" label-idle="Drop image here or click to browse" />
                             </div>
                         </label>
                     </div>
@@ -86,6 +86,19 @@ import {
     toast
 } from "vue3-toastify";
 import 'vue3-toastify/dist/index.css';
+
+import 'vue3-toastify/dist/index.css';
+// Import FilePond and its plugins
+import vueFilePond from "vue-filepond";
+import "filepond/dist/filepond.min.css";
+import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
+
+import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
+
+// Create FilePond component with plugins
+const FilePond = vueFilePond(FilePondPluginFileValidateType, FilePondPluginImagePreview);
+
 const showModal = ref(false);
 const editMode = ref(false);
 const form = ref(
@@ -110,12 +123,9 @@ const props = defineProps({
         required: true,
     },
 });
-const   handleFileChange = (event) => {
-console.log(event.target.files[0]);
-
-    // this.form.image = event.target.files[0]; // or event.target.files for multiple files
-  }
-
+const handleFileChange = (event) => {
+    this.form.image = event.target.files[0]; // or event.target.files for multiple files
+}
 
 const emit = defineEmits(['update:modelValue']);
 
@@ -130,14 +140,33 @@ const openModal = (data) => {
     form.value.fill(data);
 };
 
-const handleFileUpload = (event) => {
-    form.value.image = event.target.files[0];
+const handleFileUpload = (files) => {
+    if (files.length > 0) {
+        form.value.image = files[0].file; // Assign the file to form
+    } else {
+        form.value.image = null; // Reset if no file is selected
+    }
 };
 
 const submitForm = () => {
+    const formData = new FormData(); // Create FormData object
+    formData.append("name", form.value.name);
+    formData.append("number", form.value.number);
+    formData.append("address", form.value.address);
+    formData.append("desc", form.value.desc);
+
+    // Only append image if selected
+    if (form.value.image) {
+        formData.append("image", form.value.image);
+    }
+  
     if (editMode.value) {
         funcApi
-            .put(`/api/portfolios/${form.value.id}`, form.value)
+            .put(`/api/portfolios/${form.value.id}`, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            })
             .then((response) => {
                 const updatedPortfolio = response.data.portfolio;
                 const updatedValue = props.modelValue.map((item) =>
@@ -150,11 +179,16 @@ const submitForm = () => {
                 closeModal();
             });
     } else {
-        form.value.post("/api/portfolios")
+        funcApi
+            .post("/api/portfolios", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            })
             .then((response) => {
                 const updatedPortfolio = response.data.portfolio;
-                const updatedValue = props.modelValue.push(updatedPortfolio);
-                emit('update:modelValue', updatedValue);
+                props.modelValue.push(updatedPortfolio);
+                emit('update:modelValue', props.modelValue);
                 toast.success(response.data.message, {
                     position: toast.POSITION.TOP_RIGHT,
                 });
@@ -162,6 +196,7 @@ const submitForm = () => {
             });
     }
 };
+
 defineExpose({
     openModal,
 });

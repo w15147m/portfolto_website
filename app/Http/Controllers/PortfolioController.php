@@ -6,6 +6,7 @@ use App\Models\Portfolio;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Traits\ManageFiles;
+use Illuminate\Support\Facades\Log;
 
 class PortfolioController extends Controller
 {
@@ -60,14 +61,31 @@ class PortfolioController extends Controller
             'name' => 'string|max:255',
             'number' => 'string|max:20',
             'address' => 'string|max:255',
-            'image' => 'string|max:255',
             'desc' => 'string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
+        Log::info('Current portfolio image: ' . $request->file('image'));
+        if ($request->hasFile('image')) {
+            $oldImagePath = public_path($portfolio->image);
+            if (file_exists($oldImagePath)) {
+                unlink($oldImagePath);
+            }
+    
+            $image = $request->file('image');
+            $filename = 'portfolio_' . $portfolio->id . '.' . $image->getClientOriginalExtension();
+            $path = 'profile/portfolio' . $filename;
+            $this->uploadImg($path, $image);
+            $validatedData['image'] = $path;
+        }
         $portfolio->update($validatedData);
-
-        return response()->json(['message' => 'Portfolio updated successfully!', 'portfolio' => $portfolio]);
+        return response()->json([
+            'message' => 'Portfolio updated successfully!',
+            'portfolio' => $portfolio,
+        ]);
     }
+    
+    
+  
 
     // Delete a portfolio
     public function destroy($id)

@@ -2,7 +2,7 @@
 <div>
     <div class="flex items-center justify-between pt-3">
         <h2 class="text-base font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100 ">
-            Profile
+            UserExperience
         </h2>
         <EducationModal ref="educationModal" v-model="data" :portfolio_id="portfolioId  || 0"/>
     </div>
@@ -14,7 +14,6 @@
                         <th class="whitespace-nowrap rounded-tl-lg bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                             #
                         </th>
-                       
                         <th  class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                             Avatar    
                         </th>
@@ -31,7 +30,7 @@
                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">{{ index + 1 }}</td>
                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                             <div class="avatar flex size-10">
-                                <img class="mask is-squircle" :src="item.image" alt="avatar" />
+                                <img class="mask is-squircle" :src="item?.image ? `${cdnUrl}/${item.image}?${Date.now()}` :  imgUrl" alt="avatar" />
                             </div>
                         </td>
                         <td class="whitespace-nowrap px-4 py-3 sm:px-5" v-for="column in columns" :key="column.key">
@@ -73,6 +72,7 @@ import {
     usePortfolioStore
 } from "@/stores/portfolio";
 import DeleteConfirmation from "@/common/component/DeleteConfirmation.vue";
+import {cdnUrl} from "@/config.js";
 let imgUrl = ref(
     "https://raw.githubusercontent.com/w15147m/bootstrap5admindashboardmultiple-main/refs/heads/main/images/app-logo.png"
 );
@@ -87,6 +87,8 @@ const getData = async () => {
         portfolioId = portfolioStore.getPortfolioId;
     }
     const response = await funcApi.fetchData(`/api/experience/portfolio/${portfolioId}`);
+    console.log(response);
+    
     data.value = response;
 };
 const educationModal = ref(null);

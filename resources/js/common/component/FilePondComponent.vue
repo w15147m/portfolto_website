@@ -43,7 +43,6 @@ const handleFileUpload = (files) => {
     }
 };
 onMounted(() => {
-    console.log(props.image);
     if (props.image) {
     filePondFiles.value = [
       {

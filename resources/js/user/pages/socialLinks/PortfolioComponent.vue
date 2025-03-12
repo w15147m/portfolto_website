@@ -2,9 +2,9 @@
 <div>
     <div class="flex items-center justify-between pt-3">
         <h2 class="text-base font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100 ">
-            User Education
+            Profile
         </h2>
-        <EducationModal ref="educationModal" v-model="data" :portfolio_id="portfolioId  || 0"/>
+        <PortfolioModal ref="portfolioModal" v-model="data" :portfolio="data.length > 0 ? true : false"/>
     </div>
     <div class="card mt-3">
         <div class="is-scrollbar-hidden min-w-full overflow-x-auto">
@@ -15,22 +15,22 @@
                             #
                         </th>
                         <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                            Degree
+                            Avatar
+                        </th>
+                        <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+                            Name
+                        </th>
+                        <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+                            Phone
                         </th>
                         <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                             Description
                         </th>
                         <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                            field_of_study
+                            Address
                         </th>
                         <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                            institution
-                        </th>
-                        <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                            start_date
-                        </th>
-                        <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                            end_date
+                            Updated At
                         </th>
                         <th class="whitespace-nowrap rounded-tr-lg bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                             Action
@@ -38,25 +38,28 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="border-y border-transparent" v-for="(item, index) in data" :key="index" >
-                        <td class="whitespace-nowrap px-4 py-3 sm:px-5">{{ index + 1 }}</td>
+                    <tr class="border-y border-transparent" v-for="(item, index) in data" :key="index" > 
+                        <td class="whitespace-nowrap px-4 py-3 sm:px-5">{{ index + 1}}</td>
+                        <td class="whitespace-nowrap px-4 py-3 sm:px-5">
+                            <div class="avatar flex size-10">
+                                <!-- cdnUrl -->
+                                <img class="mask is-squircle" :src="item?.image ? `${cdnUrl}/${item.image}?${Date.now()}` :  imgUrl" alt="avatar" />
+                            </div>
+                        </td>
                         <td class="whitespace-nowrap px-4 py-3 font-medium text-slate-700 dark:text-navy-100 sm:px-5">
-                            {{ item.degree}}
+                            {{ item.name }}
+                        </td>
+                        <td class="whitespace-nowrap px-4 py-3 sm:px-5">
+                            {{ item.number }}
                         </td>
                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                             {{ item.desc }}
                         </td>
                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">
-                            {{ item.field_of_study }}
+                            {{ item.address }}
                         </td>
                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">
-                            {{ item.institution }}
-                        </td>
-                        <td class="whitespace-nowrap px-4 py-3 sm:px-5">
-                            {{ item.start_date}}
-                        </td>
-                        <td class="whitespace-nowrap px-4 py-3 sm:px-5">
-                            {{ item.end_date}}
+                            {{ item.updated_at }}
                         </td>
                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                             <span>
@@ -64,64 +67,48 @@
                                     <button @click="editItem(item)" class="btn size-8 p-0 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
                                         <i class="fa fa-edit"></i>
                                     </button>
-                                    <button @click="deleteItem(item)" class="btn size-8 p-0 text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25">
+                                    <button @click="deleteItem" class="btn size-8 p-0 text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25">
                                         <i class="fa fa-trash-alt"></i>
                                     </button>
                                 </div>
                             </span>
                         </td>
                     </tr>
+                    
                 </tbody>
             </table>
         </div>
     </div>
-    <DeleteConfirmation v-model="data" ref="deleteConfirmation"/>
 </div>
 </template>
 
 <script setup>
-import EducationModal from "./components/EducationModal.vue";
-import {
-    funcApi
-} from "@/common/utilities/apiFunctions";
+import PortfolioModal from "./components/PortfolioModal.vue";
+import { onMounted, ref, watch } from "vue";
+import { usePortfolioStore } from "@/stores/portfolio";
+import {cdnUrl} from "@/config.js";
 
-import {
-    onMounted,
-    ref
-} from "vue";
-import {
-    usePortfolioStore
-} from "@/stores/portfolio";
-import DeleteConfirmation from "@/common/component/DeleteConfirmation.vue";
 let imgUrl = ref(
-    "https://raw.githubusercontent.com/w15147m/bootstrap5admindashboardmultiple-main/refs/heads/main/images/app-logo.png"
+  "https://raw.githubusercontent.com/w15147m/bootstrap5admindashboardmultiple-main/refs/heads/main/images/app-logo.png"
 );
-const portfolioStore = usePortfolioStore();
-let data = ref([]);
-let portfolioId = '';
-const getData = async () => {
-     portfolioId = portfolioStore.getPortfolioId; 
-    if (!portfolioId) {
-        await portfolioStore.fetchPortfolio(); 
-        portfolioId = portfolioStore.getPortfolioId;
-    }
-    const response = await funcApi.fetchData(`/api/education/portfolio/${portfolioId}`);
-    data.value = response;
-};
-const educationModal = ref(null);
-const deleteConfirmation = ref(null);
 
+const portfolioStore = usePortfolioStore();
+const data = ref([]); 
+
+const getData = async () => {
+  await portfolioStore.fetchPortfolio(); 
+  data.value = [...portfolioStore.getPortfolioData];
+
+};
+
+const portfolioModal = ref(null);
 function editItem(item) {
-    educationModal.value.openModal(item);
+  portfolioModal.value.openModal(item);
 }
-function deleteItem(item) {
-    let url = '/api/education/' + item.id;
-    item.name = item.degree;
-    deleteConfirmation.value.openModal(item, url);
-}
+
 onMounted(() => {
     
-    getData();
+  getData();
 });
 </script>
 

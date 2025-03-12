@@ -17,55 +17,53 @@
                         </svg>
                     </button>
                 </div>
-                <form @submit.prevent="submitForm" class="px-4 py-4 sm:px-5">
-                    <label class="block">
-                        <span>Degree</span>
-                        <span class="relative mt-1.5 flex">
-                            <input v-model="form.degree" class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9" placeholder="Degree" type="text" />
-                            <span class="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400">
-                                <i class="fa-solid fa-graduation-cap"></i>
+                <form @submit.prevent="submitForm" class="px-4 py-4 grid grid-cols-2 gap-2">
+                    <div class="">
+                        <label class="block">
+                            <span>Image</span>
+                            <FilePondComponent :image="form.image" @file-uploaded="handleFileUpload" />
+                        </label>
+                    </div>
+                    <div class="">
+                        <label class="block">
+                            <label class="block">
+                            <span>Company</span>
+                            <span class="relative mt-1.5 flex">
+                                <input v-model="form.company" class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9" placeholder="Company" type="text">
+                                <span class="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400">
+                                    <i class="fa-solid fa-building"></i>
+                                </span>
                             </span>
-                        </span>
-                    </label>
-                    <label class="block">
-                        <span>Institution</span>
-                        <span class="relative mt-1.5 flex">
-                            <input v-model="form.institution" class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9" placeholder="Institution" type="text">
-                            <span class="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400">
-                                <i class="fa-solid fa-school"></i>
+                        </label>
+                            <span>Position</span>
+                            <span class="relative mt-1.5 flex">
+                                <input v-model="form.position" class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9" placeholder="position" type="text" />
+                                <span class="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400">
+                                    <i class="fa-solid fa-user-plus"></i>
+                                </span>
                             </span>
-                        </span>
-                    </label>
-                    <label class="block">
-                        <span>Field of study</span>
-                        <span class="relative mt-1.5 flex">
-                            <input v-model="form.field_of_study" class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9" placeholder="Field of study" type="text" />
-                            <span class="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400">
-                                <i class="fa-solid fa-book"></i>
-                            </span>
-                        </span>
-                    </label>
-                    
-                    <label class="block">
-                        <span>Start date</span>
-                        <VueDatePicker v-model="form.start_date" placeholder="Start date" text-input :auto-apply="true" />
-                    </label>
-                    <label class="block">
-                        <span>End date</span>
-                        <VueDatePicker v-model="form.end_date" placeholder="End date" text-input :auto-apply="true" />
-                    </label>
-                    <label class="block">
-                        <span>Desc</span>
-                        <textarea v-model="form.desc" rows="4" placeholder="Description" class="form-textarea mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent p-2.5"></textarea>
-                 
-                    </label>
-                    <div class="flex justify-start gap-1  m-t-px-20">
-                        <button @click="closeModal" class="btn bg-slate-150 font-medium text-slate-800 hover:bg-slate-200 focus:bg-slate-200 active:bg-slate-200/80 dark:bg-navy-500 dark:text-navy-50 dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90">
-                            Cancel
-                        </button>
-                        <button type="submit" class="btn bg-primary font-medium text-white hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90">
-                            {{ editMode ? 'Update' : 'Add' }}
-                        </button>
+                        </label>
+                        <label class="block">
+                            <span>Start date</span>
+                            <VueDatePicker v-model="form.start_date" placeholder="Start date" text-input :auto-apply="true" />
+                        </label>
+                        <label class="block">
+                            <span>End date</span>
+                            <VueDatePicker v-model="form.end_date" placeholder="End date" text-input :auto-apply="true" />
+                        </label>
+                        <label class="block">
+                            <span>Desc</span>
+                            <textarea v-model="form.desc" rows="4" placeholder="Description" class="form-textarea mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent p-2.5"></textarea>
+
+                        </label>
+                        <div class="flex justify-start gap-1  m-t-px-20">
+                            <button @click="closeModal" class="btn bg-slate-150 font-medium text-slate-800 hover:bg-slate-200 focus:bg-slate-200 active:bg-slate-200/80 dark:bg-navy-500 dark:text-navy-50 dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90">
+                                Cancel
+                            </button>
+                            <button type="submit" class="btn bg-primary font-medium text-white hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90">
+                                {{ editMode ? 'Update' : 'Add' }}
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -89,18 +87,9 @@ import 'vue3-toastify/dist/index.css';
 import {
     funcApi
 } from "@/common/utilities/apiFunctions";
+import FilePondComponent from "@/common/component/FilePondComponent.vue";
 const showModal = ref(false);
 const editMode = ref(false);
-const form = ref(new Form({
-    id: '',
-    institution: '',
-    portfolio_id: '',
-    degree: '',
-    field_of_study: '',
-    start_date: '',
-    end_date: null,
-    desc: null
-}));
 const props = defineProps({
     modelValue: {
         type: Array,
@@ -111,6 +100,17 @@ const props = defineProps({
         default: 0,
     },
 });
+const form = ref(new Form({
+    id: '',
+    company: '',
+    position: '',
+    portfolio_id: props.portfolio_id,
+    image: '',
+    start_date: '',
+    end_date: '',
+    desc: '',
+}));
+
 const emit = defineEmits(['update:modelValue']);
 const closeModal = () => {
     editMode.value = false;
@@ -118,23 +118,32 @@ const closeModal = () => {
     form.value.reset();
 };
 const openModal = (data) => {
+    console.log(data);
     
     showModal.value = true;
     editMode.value = true;
     form.value.fill(data);
-    console.log(form.value);
 };
 
-const handleFileUpload = (event) => {
-    form.value.image = event.target.files[0];
+const handleFileUpload = (file) => {
+    form.value.image = file;
 };
 
 const submitForm = () => {
-    console.log(form.value);
-    
     form.value.portfolio_id = props.portfolio_id;
+    const formData = new FormData(); 
+    formData.append("id", form.value.id);
+    formData.append("portfolio_id", form.value.portfolio_id);
+    formData.append("company", form.value.company);
+    formData.append("position", form.value.position);
+    formData.append("start_date", form.value.start_date);
+    formData.append("end_date", form.value.end_date);
+    formData.append("desc", form.value.desc);
+    if (form.value.image) {
+        formData.append("image", form.value.image);
+    }
     if (editMode.value) {
-        funcApi.put(`/api/experience/${form.value.id}`, form.value)
+        funcApi.post(`/api/experience/update/${form.value.id}`, formData)
             .then((response) => {
                 const updatedExperience = response.data.experience;
                 const updatedValue = props.modelValue.map((item) =>
@@ -144,12 +153,10 @@ const submitForm = () => {
                 toast.success(response.data.message, {
                     position: toast.POSITION.TOP_RIGHT,
                 });
-               
-                
                 closeModal();
             });
     } else {
-        funcApi.post('/api/experience', form.value)
+        funcApi.post('/api/experience', formData)
             .then((response) => {
                 const NewAddExperience = response.data.experience;
                 const NewAddValue = props.modelValue.unshift(NewAddExperience);

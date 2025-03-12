@@ -35,6 +35,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     });
     Route::prefix('experience')->group(function () {
         Route::get('portfolio/{portfolio_id}', [ExperienceController::class, 'portfolioExperience']);
-      
+        Route::post('update/{id}', [ExperienceController::class, 'updateExperience']);
     });
 });

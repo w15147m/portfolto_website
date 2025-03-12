@@ -9,7 +9,7 @@ class Experience extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['portfolio_id', 'title', 'company', 'duration'];
+    protected $fillable = [ 'company', 'position', 'image', 'start_date', 'end_date', 'desc', 'portfolio_id' ];
 
     public function portfolio() { return $this->belongsTo(Portfolio::class); }
 }

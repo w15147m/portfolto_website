@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Experience;
 use App\Traits\ManageFiles;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class ExperienceController extends Controller
@@ -51,7 +49,6 @@ class ExperienceController extends Controller
     public function updateExperience(Request $request, $id)
     {
 
-        Log::info($request->all());
         $experience = Experience::findOrFail($id);
         $validatedData = $request->validate([
             'company' => 'string|max:20',
@@ -102,6 +99,9 @@ class ExperienceController extends Controller
     public function destroy($id)
     {
         $experience = Experience::findOrFail($id);
+        if ($experience->image) {
+            Storage::disk('public')->delete($experience->image);
+        }
         $experience->delete();
 
         return response()->json(['message' =>  'Experience deleted successfully!']);

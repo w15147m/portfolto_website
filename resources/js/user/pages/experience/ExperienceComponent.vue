@@ -2,7 +2,7 @@
 <div>
     <div class="flex items-center justify-between pt-3">
         <h2 class="text-base font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100 ">
-            UserExperience
+            User Experience
         </h2>
         <EducationModal ref="educationModal" v-model="data" :portfolio_id="portfolioId  || 0"/>
     </div>
@@ -99,7 +99,7 @@ function editItem(item) {
 }
 function deleteItem(item) {
     let url = '/api/experience/' + item.id;
-    item.name = item.degree;
+    item.name = item.position;
     deleteConfirmation.value.openModal(item, url);
 }
 onMounted(() => {

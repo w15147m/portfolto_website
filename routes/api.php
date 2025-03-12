@@ -33,6 +33,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::get('portfolio/{portfolio_id}', [EducationController::class, 'portfolioEducation']);
       
     });
+    Route::prefix('social-links')->group(function () {
+        Route::get('portfolio/{portfolio_id}', [SocialLinkController::class, 'portfolioEducation']);
+    });
     Route::prefix('experience')->group(function () {
         Route::get('portfolio/{portfolio_id}', [ExperienceController::class, 'portfolioExperience']);
         Route::post('update/{id}', [ExperienceController::class, 'updateExperience']);

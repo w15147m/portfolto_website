@@ -5,6 +5,8 @@ import TestComponent from '../user/pages/TestComponent.vue';
 import PortfolioComponent from '../user/pages/portfolio/PortfolioComponent.vue';
 import educationModal from '../user/pages/education/EducationComponent.vue';
 import ExperienceComponent from '../user/pages/experience/ExperienceComponent.vue';
+import socialLinks from '../user/pages/socialLinks/socialLinks.vue';
+
 
 const routes = [
   {
@@ -31,6 +33,11 @@ const routes = [
         path: "experience",  // Default child route for /dashboard
         name: "experience",
         component: ExperienceComponent,
+      },
+      {
+        path: "socialLinks",  // Default child route for /dashboard
+        name: "socialLinks",
+        component: socialLinks,
       },
       {
         path: "test",  // Default child route for /dashboard

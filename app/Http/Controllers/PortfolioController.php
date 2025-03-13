@@ -73,7 +73,7 @@ class PortfolioController extends Controller
     
             $image = $request->file('image');
             $filename = 'portfolio_' . $portfolio->id . '.png' ;
-            $path = 'profile/portfolio/';
+            $path = 'portfolio/';
             $this->uploadImg($path, $image, $filename);
             $validatedData['image'] = $path.$filename;
             

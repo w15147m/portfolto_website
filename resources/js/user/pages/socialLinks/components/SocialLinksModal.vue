@@ -94,7 +94,6 @@
         form.value.reset();
     };
     const openModal = (data) => {
-        console.log(data);
         showModal.value = true;
         editMode.value = true;
         form.value.fill(data);

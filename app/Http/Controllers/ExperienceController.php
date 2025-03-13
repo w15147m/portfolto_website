@@ -32,7 +32,7 @@ class ExperienceController extends Controller
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $filename = 'experience_' . $request->portfolio_id . '_' . time() . '.png' ;
-             $path = 'profile/experience/';
+             $path = 'portfolio/experience/';
             $this->uploadImg($path, $image, $filename);
             $validatedData['image'] = $path.$filename;
         }else{
@@ -65,7 +65,7 @@ class ExperienceController extends Controller
             }
             $image = $request->file('image');
             $filename = 'experience_' . $experience->id . '.png' ;
-            $path = 'profile/experience/';
+            $path = 'portfolio/experience/';
             $this->uploadImg($path, $image, $filename);
             $validatedData['image'] = $path.$filename;
         }else{

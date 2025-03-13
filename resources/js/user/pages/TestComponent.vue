@@ -140,8 +140,6 @@
         form.value.fill(data);
         if (data.image) {
             form.value.image = cdnUrl+'/'+ data.image;
-            console.log(form.value.image);
-            
             filePondFiles.value = [{
                 source: cdnUrl+'/'+ data.image,
                 

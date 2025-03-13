@@ -2,9 +2,9 @@
 <div>
     <div class="flex items-center justify-between pt-3">
         <h2 class="text-base font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100 ">
-            User Experience
+            User Projects
         </h2>
-        <EducationModal ref="educationModal" v-model="data" :portfolio_id="portfolioId  || 0"/>
+        <SkillModal ref="educationModal" v-model="data" :portfolio_id="portfolioId  || 0"/>
     </div>
     <div class="card mt-3">
         <div class="is-scrollbar-hidden min-w-full overflow-x-auto">
@@ -30,11 +30,16 @@
                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">{{ index + 1 }}</td>
                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                             <div class="avatar flex size-10">
-                                <img class="mask is-squircle" :src="item?.image ? `${cdnUrl}/${item.image}?${Date.now()}` :  imgUrl" alt="avatar" />
+                                <img class="mask is-squircle"  :src="item?.image ? `${cdnUrl}/${item.image}?${Date.now()}` :  imgUrl" alt="avatar" />
                             </div>
                         </td>
                         <td class="whitespace-nowrap px-4 py-3 sm:px-5" v-for="column in columns" :key="column.key">
-                            {{ item[column] }}
+                            <span v-if="column === 'link'" >
+                                <a href=" {{ item[column] }}" target="_blank" rel="noopener noreferrer" class=" hover:underline">  {{ item[column] }}</a>
+                            </span>
+                            <span v-else>
+                                {{ item[column] }}
+                            </span>
                         </td>
                     
                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">
@@ -59,7 +64,7 @@
 </template>
 
 <script setup>
-import EducationModal from "./components/ExperienceModal.vue";
+import SkillModal from "./components/ProjectsModal.vue";
 import {
     funcApi
 } from "@/common/utilities/apiFunctions";
@@ -79,14 +84,15 @@ let imgUrl = ref(
 const portfolioStore = usePortfolioStore();
 let data = ref([]);
 let portfolioId = '';
-let columns = ref([  'company', 'position',  'desc' , 'start_date', 'end_date']);
+
+let columns = ref([ 'name' , 'desc' , 'link' ]);
 const getData = async () => {
      portfolioId = portfolioStore.getPortfolioId; 
     if (!portfolioId) {
         await portfolioStore.fetchPortfolio(); 
         portfolioId = portfolioStore.getPortfolioId;
     }
-    const response = await funcApi.fetchData(`/api/experience/portfolio/${portfolioId}`);
+    const response = await funcApi.fetchData(`/api/projects/portfolio/${portfolioId}`);
     data.value = response;
 };
 const educationModal = ref(null);
@@ -96,7 +102,7 @@ function editItem(item) {
     educationModal.value.openModal(item);
 }
 function deleteItem(item) {
-    let url = '/api/experience/' + item.id;
+    let url = '/api/projects/' + item.id;
     item.name = item.position;
     deleteConfirmation.value.openModal(item, url);
 }

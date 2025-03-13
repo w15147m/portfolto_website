@@ -1,7 +1,11 @@
 // FilePondComponent.vue
 <template>
 <div class="filepond fp-bordered mt-1.5">
-    <FilePond name="image" accepted-file-types="image/jpeg, image/png"  :files="filePondFiles" @updatefiles="handleFileUpload" label-idle="Drop image here or click to browse" />
+    <FilePond name="image" accepted-file-types="image/jpeg, image/png" 
+     :files="filePondFiles"
+      :allow-multiple="props.multiple"
+      @updatefiles="handleFileUpload"
+       label-idle="Drop image here or click to browse" />
 </div>
 </template>
 
@@ -24,6 +28,11 @@ let props = defineProps({
     image: {
         types: String,
         default: null,
+        required: false
+    },
+    multiple: {
+        types: Boolean,
+        default: false,
         required: false
     }
     

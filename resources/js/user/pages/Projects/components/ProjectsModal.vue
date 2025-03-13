@@ -21,35 +21,27 @@
                     <div class="">
                         <label class="block">
                             <span>Image</span>
-                            <FilePondComponent :image="form.image" @file-uploaded="handleFileUpload" />
+                            <FilePondComponent :image="form.image" :multiple=true @file-uploaded="handleFileUpload" />
                         </label>
                     </div>
                     <div class="">
                         <label class="block">
-                            <label class="block">
-                            <span>Company</span>
+                            <span>Project Name</span>
                             <span class="relative mt-1.5 flex">
-                                <input v-model="form.company" class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9" placeholder="Company" type="text">
+                                <input v-model="form.name" class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9" placeholder="Skill Name" type="text">
                                 <span class="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400">
-                                    <i class="fa-solid fa-building"></i>
-                                </span>
-                            </span>
-                        </label>
-                            <span>Position</span>
-                            <span class="relative mt-1.5 flex">
-                                <input v-model="form.position" class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9" placeholder="position" type="text" />
-                                <span class="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400">
-                                    <i class="fa-solid fa-user-plus"></i>
+                                    <i class="fa-solid fa-bars-progress"></i>
                                 </span>
                             </span>
                         </label>
                         <label class="block">
-                            <span>Start date</span>
-                            <VueDatePicker v-model="form.start_date" placeholder="Start date" text-input :auto-apply="true" />
-                        </label>
-                        <label class="block">
-                            <span>End date</span>
-                            <VueDatePicker v-model="form.end_date" placeholder="End date" text-input :auto-apply="true" />
+                            <span>Project link</span>
+                            <span class="relative mt-1.5 flex">
+                                <input v-model="form.link" class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9" placeholder="Skill Name" type="text">
+                                <span class="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400">
+                                    <i class="fa-solid fa-link"></i>
+                                </span>
+                            </span>
                         </label>
                         <label class="block">
                             <span>Desc</span>
@@ -102,12 +94,8 @@ const props = defineProps({
 });
 const form = ref(new Form({
     id: '',
-    company: '',
-    position: '',
-    portfolio_id: props.portfolio_id,
-    image: '',
-    start_date: '',
-    end_date: '',
+    name: '',
+    link: '',
     desc: '',
 }));
 
@@ -129,23 +117,19 @@ const handleFileUpload = (file) => {
 
 const submitForm = () => {
     form.value.portfolio_id = props.portfolio_id;
-    const formData = new FormData(); 
+    const formData = new FormData();
     formData.append("id", form.value.id);
     formData.append("portfolio_id", form.value.portfolio_id);
-    formData.append("company", form.value.company);
-    formData.append("position", form.value.position);
-    formData.append("start_date", form.value.start_date);
-    formData.append("end_date", form.value.end_date);
+    formData.append("name", form.value.name);
+    formData.append("link", form.value.link);
     formData.append("desc", form.value.desc);
-    if (form.value.image) {
-        formData.append("image", form.value.image);
-    }
+   
     if (editMode.value) {
-        funcApi.post(`/api/experience/update/${form.value.id}`, formData)
+        funcApi.post(`/api/projects/update/project/${form.value.id}`, formData)
             .then((response) => {
-                const updatedExperience = response.data.experience;
+                const updatedProject = response.data.project;
                 const updatedValue = props.modelValue.map((item) =>
-                    item.id === updatedExperience?.id ? updatedExperience : item
+                    item.id === updatedProject?.id ? updatedProject : item
                 );
                 emit('update:modelValue', updatedValue);
                 toast.success(response.data.message, {
@@ -154,10 +138,10 @@ const submitForm = () => {
                 closeModal();
             });
     } else {
-        funcApi.post('/api/experience', formData)
+        funcApi.post('/api/projects', formData)
             .then((response) => {
-                const NewAddExperience = response.data.experience;
-                const NewAddValue = props.modelValue.unshift(NewAddExperience);
+                const NewAddProject = response.data.project;
+                const NewAddValue = props.modelValue.unshift(NewAddProject);
                 // emit('update:modelValue', updatedValue);
                 toast.success(response.data.message, {
                     position: toast.POSITION.TOP_RIGHT,

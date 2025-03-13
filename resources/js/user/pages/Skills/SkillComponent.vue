@@ -2,9 +2,9 @@
 <div>
     <div class="flex items-center justify-between pt-3">
         <h2 class="text-base font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100 ">
-            User Experience
+            User Skills
         </h2>
-        <EducationModal ref="educationModal" v-model="data" :portfolio_id="portfolioId  || 0"/>
+        <SkillModal ref="educationModal" v-model="data" :portfolio_id="portfolioId  || 0"/>
     </div>
     <div class="card mt-3">
         <div class="is-scrollbar-hidden min-w-full overflow-x-auto">
@@ -59,7 +59,7 @@
 </template>
 
 <script setup>
-import EducationModal from "./components/ExperienceModal.vue";
+import SkillModal from "./components/SkillModal.vue";
 import {
     funcApi
 } from "@/common/utilities/apiFunctions";
@@ -79,14 +79,15 @@ let imgUrl = ref(
 const portfolioStore = usePortfolioStore();
 let data = ref([]);
 let portfolioId = '';
-let columns = ref([  'company', 'position',  'desc' , 'start_date', 'end_date']);
+
+let columns = ref([ 'name', 'proficiency', 'desc', ]);
 const getData = async () => {
      portfolioId = portfolioStore.getPortfolioId; 
     if (!portfolioId) {
         await portfolioStore.fetchPortfolio(); 
         portfolioId = portfolioStore.getPortfolioId;
     }
-    const response = await funcApi.fetchData(`/api/experience/portfolio/${portfolioId}`);
+    const response = await funcApi.fetchData(`/api/skills/portfolio/${portfolioId}`);
     data.value = response;
 };
 const educationModal = ref(null);
@@ -96,7 +97,7 @@ function editItem(item) {
     educationModal.value.openModal(item);
 }
 function deleteItem(item) {
-    let url = '/api/experience/' + item.id;
+    let url = '/api/skills/' + item.id;
     item.name = item.position;
     deleteConfirmation.value.openModal(item, url);
 }

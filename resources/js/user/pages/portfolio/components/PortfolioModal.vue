@@ -127,7 +127,6 @@ const openModal = (data) => {
     showModal.value = true;
     editMode.value = true;
     form.value.fill(data);
-    console.log(form.value);
     
 };
 

@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Skill extends Model
 {
     use HasFactory;
-
-    protected $fillable = ['portfolio_id', 'name', 'level'];
-
+    protected $fillable = [ 'name', 'portfolio_id', 'proficiency', 'image', 'desc'];
     public function portfolio() { return $this->belongsTo(Portfolio::class); }
 }

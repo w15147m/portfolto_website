@@ -9,8 +9,19 @@ class Project extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['portfolio_id', 'name', 'description', 'image'];
+    protected $fillable = [
+        'portfolio_id',
+        'name',
+        'desc',
+        'image'
+    ];
 
-    public function portfolio() { return $this->belongsTo(Portfolio::class); }
-    public function images() { return $this->hasMany(ProjectImage::class); }
+    public function portfolio()
+    {
+        return $this->belongsTo(Portfolio::class);
+    }
+    public function images()
+    {
+        return $this->hasMany(ProjectImage::class);
+    }
 }

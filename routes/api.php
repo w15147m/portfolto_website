@@ -1,4 +1,3 @@
-
 <?php
 // routes/api.php
 use App\Http\Controllers\ProfileController;
@@ -23,7 +22,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         'projects' => ProjectController::class,
         'project-images' => ProjectImageController::class,
     ]);
-    // pi/portfolios/1
     Route::prefix('portfolio')->group(function () {
         Route::get('user/{user_id}', [PortfolioController::class, 'userPortfolio']);
         Route::post('update/{portfolio_id}', [PortfolioController::class, 'updatePortfolio']);
@@ -39,5 +37,13 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::prefix('experience')->group(function () {
         Route::get('portfolio/{portfolio_id}', [ExperienceController::class, 'portfolioExperience']);
         Route::post('update/{id}', [ExperienceController::class, 'updateExperience']);
+    });
+    Route::prefix('skills')->group(function () {
+        Route::get('portfolio/{portfolio_id}', [SkillController::class, 'portfolioSkills']);
+        Route::post('update/skill/{id}', [SkillController::class, 'updateSkill']);
+    });
+    Route::prefix('projects')->group(function () {
+        Route::get('portfolio/{portfolio_id}', [ProjectController::class, 'portfolioProjects']);
+        Route::post('update/project/{id}', [ProjectController::class, 'updateProject']);
     });
 });

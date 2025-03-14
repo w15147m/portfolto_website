@@ -97,7 +97,9 @@ const form = ref(new Form({
     name: '',
     link: '',
     desc: '',
+    image: [],
 }));
+const projectImages = ref([]);
 
 const emit = defineEmits(['update:modelValue']);
 const closeModal = () => {
@@ -112,10 +114,16 @@ const openModal = (data) => {
 };
 
 const handleFileUpload = (file) => {
-    form.value.image = file;
+    if (!Array.isArray(form.value.image)) {
+        form.value.image = [];
+    }
+    form.value.image.push(file);
+
 };
 
 const submitForm = () => {
+    console.log(form.value.image);
+
     form.value.portfolio_id = props.portfolio_id;
     const formData = new FormData();
     formData.append("id", form.value.id);
@@ -123,7 +131,13 @@ const submitForm = () => {
     formData.append("name", form.value.name);
     formData.append("link", form.value.link);
     formData.append("desc", form.value.desc);
-   
+    if (form.value.image && Array.isArray(form.value.image)) {
+        form.value.image.forEach((file) => {
+            formData.append("images[]", file); // Append images one by one
+        });
+    }
+console.log(form.value.images);
+
     if (editMode.value) {
         funcApi.post(`/api/projects/update/project/${form.value.id}`, formData)
             .then((response) => {

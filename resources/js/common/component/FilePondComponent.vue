@@ -1,6 +1,6 @@
 // FilePondComponent.vue
 <template>
-<div class="filepond fp-bordered mt-1.5">
+<div class="filepond fp-bordered mt-1.5 max-h-px-465 overflow-y-scroll" style="overflow-y: scroll;">
     <FilePond name="image" accepted-file-types="image/jpeg, image/png" 
      :files="filePondFiles"
       :allow-multiple="props.multiple"
@@ -24,6 +24,8 @@ import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
+import { debounce } from 'lodash';
+
 let props = defineProps({
     image: {
         types: String,
@@ -42,15 +44,14 @@ let props = defineProps({
 
 const emit = defineEmits(['file-uploaded']);
 const filePondFiles = ref([]);
-
 const FilePond = vueFilePond(FilePondPluginFileValidateType, FilePondPluginImagePreview);
-const handleFileUpload = (files) => {
-    if (files.length > 0) {
-        emit('file-uploaded', files[0].file);
-    } else {
-        emit('file-uploaded', null);
-    }
-};
+const handleFileUpload = debounce((files) => {
+    if (!files || files.length === 0) return;
+    files.forEach(file => {
+        emit('file-uploaded', file.file);
+    });
+}, 200);
+
 onMounted(() => {
     if (props.image) {
     filePondFiles.value = [

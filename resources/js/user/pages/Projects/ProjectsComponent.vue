@@ -4,7 +4,7 @@
         <h2 class="text-base font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100 ">
             User Projects
         </h2>
-        <SkillModal ref="educationModal" v-model="data" :portfolio_id="portfolioId  || 0"/>
+        <SkillModal ref="educationModal" v-model="data" :portfolio_id="portfolioId  || 0" />
     </div>
     <div class="card mt-3">
         <div class="is-scrollbar-hidden min-w-full overflow-x-auto">
@@ -14,8 +14,8 @@
                         <th class="whitespace-nowrap rounded-tl-lg bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                             #
                         </th>
-                        <th  class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                            Avatar    
+                        <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+                            Avatar
                         </th>
                         <th v-for="column in columns" :key="column.key" class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                             {{ column }}
@@ -29,19 +29,21 @@
                     <tr class="border-y border-transparent " v-for="(item, index) in data" :key="index" style="border-top: 1px solid ;">
                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">{{ index + 1 }}</td>
                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">
-                            <div class="avatar flex size-10">
-                                <img class="mask is-squircle"  :src="item?.image ? `${cdnUrl}/${item.image}?${Date.now()}` :  imgUrl" alt="avatar" />
+                            <div class="avatar-group flex ai-center">
+                                <div v-for="url in item.images" :key="url.id" class="avatar-container position-relative m-l-px--10 avatar-container'">
+                                    <img :src="`${cdnUrl}/${url.image}`" class="avatar-img  w-px-50 h-px-50 rounded-full border border-2  border-white object-fit-cove" alt="User Avatar">
+                                </div>
                             </div>
                         </td>
                         <td class="whitespace-nowrap px-4 py-3 sm:px-5" v-for="column in columns" :key="column.key">
-                            <span v-if="column === 'link'" >
-                                <a href=" {{ item[column] }}" target="_blank" rel="noopener noreferrer" class=" hover:underline">  {{ item[column] }}</a>
+                            <span v-if="column === 'link'">
+                                <a href=" {{ item[column] }}" target="_blank" rel="noopener noreferrer" class=" hover:underline"> {{ item[column] }}</a>
                             </span>
                             <span v-else>
                                 {{ item[column] }}
                             </span>
                         </td>
-                    
+
                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                             <span>
                                 <div class="flex justify-center space-x-2">
@@ -59,7 +61,7 @@
             </table>
         </div>
     </div>
-    <DeleteConfirmation v-model="data" ref="deleteConfirmation"/>
+    <DeleteConfirmation v-model="data" ref="deleteConfirmation" />
 </div>
 </template>
 
@@ -77,7 +79,9 @@ import {
     usePortfolioStore
 } from "@/stores/portfolio";
 import DeleteConfirmation from "@/common/component/DeleteConfirmation.vue";
-import {cdnUrl} from "@/config.js";
+import {
+    cdnUrl
+} from "@/config.js";
 let imgUrl = ref(
     "https://raw.githubusercontent.com/w15147m/bootstrap5admindashboardmultiple-main/refs/heads/main/images/app-logo.png"
 );
@@ -85,15 +89,17 @@ const portfolioStore = usePortfolioStore();
 let data = ref([]);
 let portfolioId = '';
 
-let columns = ref([ 'name' , 'desc' , 'link' ]);
+let columns = ref(['name', 'desc', 'link']);
 const getData = async () => {
-     portfolioId = portfolioStore.getPortfolioId; 
+    portfolioId = portfolioStore.getPortfolioId;
     if (!portfolioId) {
-        await portfolioStore.fetchPortfolio(); 
+        await portfolioStore.fetchPortfolio();
         portfolioId = portfolioStore.getPortfolioId;
     }
     const response = await funcApi.fetchData(`/api/projects/portfolio/${portfolioId}`);
     data.value = response;
+    console.log(data.value);
+
 };
 const educationModal = ref(null);
 const deleteConfirmation = ref(null);
@@ -101,13 +107,14 @@ const deleteConfirmation = ref(null);
 function editItem(item) {
     educationModal.value.openModal(item);
 }
+
 function deleteItem(item) {
     let url = '/api/projects/' + item.id;
     item.name = item.position;
     deleteConfirmation.value.openModal(item, url);
 }
 onMounted(() => {
-    
+
     getData();
 });
 </script>

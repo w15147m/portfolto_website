@@ -29,50 +29,33 @@ class ProjectController extends Controller
             'portfolio_id' => 'required|exists:portfolios,id',
             'desc' => 'string|max:255',
             'link' =>  'string|max:255',
-        ]);
-        $request->validate([
             'images' => 'required|array',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-        // if ($request->hasFile('image')) {
-        //     $image = $request->file('image');
-        //     $filename = 'project_' . $request->portfolio_id . '_' . time() . '.png' ;
-        //      $path = 'portfolio/project/';
-        //     $this->uploadImg($path, $image, $filename);
-        //     $validatedData['image'] = $path.$filename;
-        // }else{
-        //     $validatedData['image'] = '';
-        // }
         $project = project::create($validatedData);
+        if ($request->hasFile('images')) {
+            $this->uploadImage($request->file('images'), $project->id);
+        }
+        $project->load('images');
         return response()->json(['message' => 'project updated successfully!', 'project' => $project]);
     }
-    
+
     public function updateProject(Request $request, $id)
     {
-        Log::info($request->all());
+
         $project = Project::findOrFail($id);
         $validatedData = $request->validate([
             'name' => 'string|max:20',
             'desc' => 'string|max:255',
             'link' =>  'string|max:255',
-        ]);
-        $request->validate([
-            'images' => 'required|array',
+            'images' => 'array',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+        if ($request->has('image_t0_delete')) {
+            $this->destroyImage($request->image_t0_delete);
+        }
         if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                $filename = 'project_' . $request->portfolio_id . '_' . time() . '.png';
-                $path = 'portfolio/project/';
-                $this->uploadImg($path, $image, $filename);
-                $imageUrl = $path . $filename;
-                ProjectImage::create([
-                    'projects_id' => $project->id,
-                    'image' => $imageUrl,
-                ]);
-            }
-        } else {
-            $validatedData['image'] = '';
+            $this->uploadImage($request->file('images'), $project->id);
         }
         $project->update($validatedData);
         $project->save();
@@ -87,5 +70,28 @@ class ProjectController extends Controller
         }
         $project->delete();
         return response()->json(['message' =>  'project deleted successfully!']);
+    }
+    private function uploadImage($imagesToUpload, $portfolio_id)
+    {
+        foreach ($imagesToUpload as $image) {
+            $filename = 'project_' . $portfolio_id . '_' . time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+             $path = 'portfolio/project/';
+            $this->uploadImg($path, $image, $filename);
+            $imageUrl = $path . $filename;
+            ProjectImage::create([
+                'projects_id' => $portfolio_id,
+                'image' => $imageUrl,
+            ]);
+        }
+    }
+    private function destroyImage($imagesToDelete)
+    {
+        $imagesToDelete = explode(',', $imagesToDelete);
+        foreach ($imagesToDelete as $imagePath) {
+            if (Storage::disk('public')->exists($imagePath)) {
+                Storage::disk('public')->delete($imagePath);
+            }
+            ProjectImage::where('image', $imagePath)->delete();
+        }
     }
 }

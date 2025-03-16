@@ -31,7 +31,7 @@
                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                             <div class="avatar-group flex ai-center">
                                 <div v-for="url in item.images" :key="url.id" class="avatar-container position-relative m-l-px--10 avatar-container'">
-                                    <img :src="`${cdnUrl}/${url.image}`" class="avatar-img  w-px-50 h-px-50 rounded-full border border-2  border-white object-fit-cove" alt="User Avatar">
+                                    <img :src="`${cdnUrl}/${url.image}`" class="avatar-img  min-w-px-50 w-px-50 h-px-50 rounded-full border border-2  border-white object-fit-cove" alt="User Avatar">
                                 </div>
                             </div>
                         </td>
@@ -98,7 +98,6 @@ const getData = async () => {
     }
     const response = await funcApi.fetchData(`/api/projects/portfolio/${portfolioId}`);
     data.value = response;
-    console.log(data.value);
 
 };
 const educationModal = ref(null);

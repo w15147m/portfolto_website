@@ -13,7 +13,6 @@ class Project extends Model
         'portfolio_id',
         'name',
         'desc',
-        'image'
     ];
 
     public function portfolio()

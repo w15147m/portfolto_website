@@ -17,9 +17,8 @@ class PortfolioController extends Controller
         $portfolios = Portfolio::where('user_id', 1)
             ->with(['user', 'education', 'skills', 'services', 'projects', 'socialLinks'])
             ->first();
-        return view('portfolioThemes.theme', compact('portfolios'));
+        return view('layouts.theme', compact('portfolios'));
     }
-
     // Show a single portfolio
     public function userPortfolio($user_id)
     {

@@ -46,9 +46,23 @@
                         <label class="block">
                             <span>Desc</span>
                             <textarea v-model="form.desc" rows="4" placeholder="Description" class="form-textarea mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent p-2.5"></textarea>
-
                         </label>
-                        <div class="flex justify-start gap-1  m-t-px-20">
+                        <span>Old Images</span>
+                        <div class=" max-h-px-175" style="overflow-y: scroll;">
+                            <ul class="space-y-3.5 font-inter font-medium">
+                                <li v-for="row in oldImages" :key="row.id">
+                                    <div class="flex justify-between ai-center">
+                                        <div class="avatar size-18 h-px-50 w-px-50">
+                                            <img class="rounded-full" :src="`${cdnUrl}/${row.image}`" alt="avatar">
+                                        </div>
+                                        <button type="button"  @click="imageToDelete(row)" class="btn size-8 p-0 text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25">
+                                            <i class="fa fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="flex justify-start gap-1 align-items-center  m-t-px-20">
                             <button @click="closeModal" class="btn bg-slate-150 font-medium text-slate-800 hover:bg-slate-200 focus:bg-slate-200 active:bg-slate-200/80 dark:bg-navy-500 dark:text-navy-50 dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90">
                                 Cancel
                             </button>
@@ -79,9 +93,15 @@ import 'vue3-toastify/dist/index.css';
 import {
     funcApi
 } from "@/common/utilities/apiFunctions";
+import {
+    cdnUrl
+} from "@/config.js";
 import FilePondComponent from "@/common/component/FilePondComponent.vue";
 const showModal = ref(false);
 const editMode = ref(false);
+let imgUrl = ref(
+    "https://raw.githubusercontent.com/w15147m/bootstrap5admindashboardmultiple-main/refs/heads/main/images/app-logo.png"
+);
 const props = defineProps({
     modelValue: {
         type: Array,
@@ -98,16 +118,28 @@ const form = ref(new Form({
     link: '',
     desc: '',
     image: [],
+    image_t0_delete: [],
 }));
 const projectImages = ref([]);
+const oldImages = ref([]);
 
 const emit = defineEmits(['update:modelValue']);
+const imageToDelete = (dataToDelete) => {
+    if (!form.value.image_t0_delete) {
+        form.value.image_t0_delete = []; 
+    }
+    form.value.image_t0_delete.push(dataToDelete.image);
+    oldImages.value = oldImages.value.filter((item) => item.id !== dataToDelete.id);
+    console.log(dataToDelete.image);
+
+}
 const closeModal = () => {
     editMode.value = false;
     showModal.value = false;
     form.value.reset();
 };
 const openModal = (data) => {
+    oldImages.value = data.images;
     showModal.value = true;
     editMode.value = true;
     form.value.fill(data);
@@ -131,19 +163,18 @@ const submitForm = () => {
     formData.append("name", form.value.name);
     formData.append("link", form.value.link);
     formData.append("desc", form.value.desc);
+    formData.append("image_t0_delete", form.value.image_t0_delete);
     if (form.value.image && Array.isArray(form.value.image)) {
         form.value.image.forEach((file) => {
-            formData.append("images[]", file); // Append images one by one
+            formData.append("images[]", file); 
         });
     }
-console.log(form.value.images);
-
     if (editMode.value) {
         funcApi.post(`/api/projects/update/project/${form.value.id}`, formData)
             .then((response) => {
                 const updatedProject = response.data.project;
                 const updatedValue = props.modelValue.map((item) =>
-                    item.id === updatedProject?.id ? updatedProject : item
+                    item.id === updatedProject.id ? updatedProject : item
                 );
                 emit('update:modelValue', updatedValue);
                 toast.success(response.data.message, {

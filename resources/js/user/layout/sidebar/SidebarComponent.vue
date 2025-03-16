@@ -39,7 +39,6 @@
                     <i class="fa-solid fa-circle"></i>
                 </router-link>
             </div>
-
             <!-- Bottom Links -->
             <div class="flex flex-col items-center space-y-3 py-3">
                 <!-- Settings -->

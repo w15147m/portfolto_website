@@ -1,6 +1,6 @@
 // FilePondComponent.vue
 <template>
-<div class="filepond fp-bordered mt-1.5 max-h-px-465 overflow-y-scroll" style="overflow-y: scroll;">
+<div class="filepond fp-bordered mt-1.5 max-h-px-450 overflow-y-scroll" style="overflow-y: scroll;">
     <FilePond name="image" accepted-file-types="image/jpeg, image/png" 
      :files="filePondFiles"
       :allow-multiple="props.multiple"

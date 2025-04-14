@@ -13,9 +13,6 @@ class ExperienceController extends Controller
     public function portfolioExperience($portfolio_id)
     {
         $experience = Experience::where('portfolio_id', $portfolio_id)->get();
-        if ($experience->isEmpty()) {
-            return response()->json(['message' => 'No portfolio found'], 404);
-        }
         return response()->json($experience);
     }
     public function store(Request $request)

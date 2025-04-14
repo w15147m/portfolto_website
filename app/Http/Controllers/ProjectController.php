@@ -16,9 +16,6 @@ class ProjectController extends Controller
     {
         $skills = Skill::where('portfolio_id', $portfolio_id)->get();
         $projects = Project::where('portfolio_id', $portfolio_id)->with('images')->with('skills')->get();
-        if ($projects->isEmpty()) {
-            return response()->json(['message' => 'No portfolio found'], 404);
-        }
         $data = [
             'projects' => $projects ?? [],
             'skills' => $skills ?? [],

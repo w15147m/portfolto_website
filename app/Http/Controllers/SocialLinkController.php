@@ -11,9 +11,6 @@ class SocialLinkController extends Controller
     public function portfolioEducation($portfolio_id)
     {
         $socialLink = SocialLink::where('portfolio_id', $portfolio_id)->get();
-        if ($socialLink->isEmpty()) {
-            return response()->json(['message' => 'No portfolio found'], 404);
-        }
         return response()->json($socialLink);
     }
 

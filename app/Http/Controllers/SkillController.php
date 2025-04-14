@@ -14,12 +14,7 @@ class SkillController extends Controller
     use ManageFiles;
     public function portfolioSkills($portfolio_id)
     {
-        $skill = Skill::where('portfolio_id', $portfolio_id)
-       
-        ->get();
-        if ($skill->isEmpty()) {
-            return response()->json(['message' => 'No portfolio found'], 404);
-        }
+        $skill = Skill::where('portfolio_id', $portfolio_id)->get();
         return response()->json($skill);
     }
     public function store(Request $request)

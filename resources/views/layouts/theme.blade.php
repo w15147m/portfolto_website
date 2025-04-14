@@ -44,7 +44,7 @@
 </head>
 
 <body class="bg-light-bg dark:bg-dark-bg transition-colors duration-300">
-    {{-- {{$portfolios}} --}}
+    {{-- {{$portfolios->projects}} --}}
     @include('portfolioThemes.layouts.mobileSidebar')
     @include('portfolioThemes.layouts.navbar')
     @include('portfolioThemes.components.heroSection', ['profile' => $portfolios] )

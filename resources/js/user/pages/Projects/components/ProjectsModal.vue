@@ -102,7 +102,8 @@ import {
     cdnUrl
 } from "@/config.js";
 import FilePondComponent from "@/common/component/FilePondComponent.vue";
-import Multiselect from 'vue-multiselect';
+import Multiselect from 'vue-multiselect'
+import 'vue-multiselect/dist/vue-multiselect.css'
 const props = defineProps({
     modelValue: {
         type: Array,

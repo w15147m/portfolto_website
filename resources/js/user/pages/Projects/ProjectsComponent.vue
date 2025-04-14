@@ -4,7 +4,7 @@
         <h2 class="text-base font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100 ">
             User Projects
         </h2>
-        <SkillModal ref="educationModal" v-model="data" :portfolio_id="portfolioId  || 0" />
+        <ProjectsModal ref="educationModal" v-model="data" :skills="skills" :portfolio_id="portfolioId  || 0" />
     </div>
     <div class="card mt-3">
         <div class="is-scrollbar-hidden min-w-full overflow-x-auto">
@@ -20,13 +20,16 @@
                         <th v-for="column in columns" :key="column.key" class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                             {{ column }}
                         </th>
+                        <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+                            skills
+                        </th>
                         <th class="whitespace-nowrap rounded-tr-lg bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                             Action
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="border-y border-transparent " v-for="(item, index) in data" :key="index" style="border-top: 1px solid ;">
+                    <tr class="border border-transparent border-b-slate-200 dark:border-b-navy-500" v-for="(item, index) in data" :key="index">
                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">{{ index + 1 }}</td>
                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                             <div class="avatar-group flex ai-center">
@@ -41,6 +44,16 @@
                             </span>
                             <span v-else>
                                 {{ item[column] }}
+                            </span>
+                        </td>
+                        <td class="whitespace-nowrap px-4 py-3 sm:px-5">
+                            <span v-for="Skill in skills" :key="Skill.id">
+                                <span v-for="rowSkill in item.skills" :key="rowSkill.id" class="">
+                                    <div class="badge space-x-2 bg-primary text-white dark:bg-accent m-t-px-2 flex flex-wrap "  v-if="Skill.id === rowSkill.id">
+                                        <img class="size-5" :src="imgUrl" alt="">
+                                        <span>Primary</span>
+                                    </div>
+                                </span>
                             </span>
                         </td>
 
@@ -66,7 +79,7 @@
 </template>
 
 <script setup>
-import SkillModal from "./components/ProjectsModal.vue";
+import ProjectsModal from "./components/ProjectsModal.vue";
 import {
     funcApi
 } from "@/common/utilities/apiFunctions";
@@ -87,6 +100,7 @@ let imgUrl = ref(
 );
 const portfolioStore = usePortfolioStore();
 let data = ref([]);
+let skills = ref([]);
 let portfolioId = '';
 
 let columns = ref(['name', 'desc', 'link']);
@@ -97,7 +111,11 @@ const getData = async () => {
         portfolioId = portfolioStore.getPortfolioId;
     }
     const response = await funcApi.fetchData(`/api/projects/portfolio/${portfolioId}`);
-    data.value = response;
+    data.value = response.projects;
+    skills.value = response.skills;
+    console.log(response);
+    
+    
 
 };
 const educationModal = ref(null);

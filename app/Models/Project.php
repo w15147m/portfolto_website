@@ -23,4 +23,8 @@ class Project extends Model
     {
         return $this->hasMany(ProjectImage::class, 'projects_id');
     }
+    public function skills()
+    {
+        return $this->belongsToMany(Skill::class, 'project_skill', 'projects_id', 'skills_id')->withTimestamps();
+    }
 }

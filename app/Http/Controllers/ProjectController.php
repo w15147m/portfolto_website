@@ -7,7 +7,6 @@ use App\Models\ProjectImage;
 use App\Models\Skill;
 use App\Traits\ManageFiles;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
@@ -15,14 +14,19 @@ class ProjectController extends Controller
     use ManageFiles;
     public function portfolioProjects($portfolio_id)
     {
-        $projects = Project::where('portfolio_id', $portfolio_id)->with('images')->get();
+        $skills = Skill::where('portfolio_id', $portfolio_id)->get();
+        $projects = Project::where('portfolio_id', $portfolio_id)->with('images')->with('skills')->get();
         if ($projects->isEmpty()) {
             return response()->json(['message' => 'No portfolio found'], 404);
         }
-        return response()->json($projects);
+        $data = [
+            'projects' => $projects ?? [],
+            'skills' => $skills ?? [],
+        ];
+        return response()->json($data);
     }
 
-    public function store(Request $request)
+    public function store(Request  $request)
     {
         $validatedData = $request->validate([
             'name' => 'string|max:20',
@@ -36,13 +40,15 @@ class ProjectController extends Controller
         if ($request->hasFile('images')) {
             $this->uploadImage($request->file('images'), $project->id);
         }
-        $project->load('images');
+        if ($request->has('skills')) {
+            $project->skills()->sync($request->skills);
+        }
+        $project->load('images', 'skills');
         return response()->json(['message' => 'project updated successfully!', 'project' => $project]);
     }
 
     public function updateProject(Request $request, $id)
     {
-
         $project = Project::findOrFail($id);
         $validatedData = $request->validate([
             'name' => 'string|max:20',
@@ -56,10 +62,13 @@ class ProjectController extends Controller
         }
         if ($request->hasFile('images')) {
             $this->uploadImage($request->file('images'), $project->id);
+            }
+        if ($request->has('skills')) {
+            $project->skills()->sync($request->skills);
         }
         $project->update($validatedData);
         $project->save();
-        $project->load('images');
+        $project->load('images', 'skills');
         return response()->json(['message' => 'project updated successfully!', 'project' => $project]);
     }
     public function destroy($id)

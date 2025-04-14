@@ -7,12 +7,16 @@ use Illuminate\Http\Request;
 use App\Traits\ManageFiles;
 use Illuminate\Support\Facades\Storage;
 
+use function Laravel\Prompts\select;
+
 class SkillController extends Controller
 {
     use ManageFiles;
     public function portfolioSkills($portfolio_id)
     {
-        $skill = Skill::where('portfolio_id', $portfolio_id)->get();
+        $skill = Skill::where('portfolio_id', $portfolio_id)
+       
+        ->get();
         if ($skill->isEmpty()) {
             return response()->json(['message' => 'No portfolio found'], 404);
         }

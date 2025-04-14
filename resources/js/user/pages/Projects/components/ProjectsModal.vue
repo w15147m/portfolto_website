@@ -6,7 +6,7 @@
     <teleport to="#x-teleport-target">
         <div v-if="showModal" class="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden px-4 py-6 sm:px-5" role="dialog" @keydown.esc="closeModal">
             <div class="absolute inset-0 bg-slate-900/60 transition-opacity duration-300" @click="closeModal"></div>
-            <div class="relative w-full max-w-lg origin-top rounded-lg bg-white transition-all duration-300 dark:bg-navy-700">
+            <div class="relative w-full max-w-lg origin-top rounded-lg bg-white transition-all duration-300 dark:bg-navy-700 max-w-px-785 min-w-px-785">
                 <div class="flex justify-between rounded-t-lg bg-slate-200 px-4 py-3 dark:bg-navy-800 sm:px-5">
                     <h3 class="text-base font-medium text-slate-700 dark:text-navy-100">
                         {{ editMode ? 'Edit' : 'Add New' }} Portfolio
@@ -44,7 +44,11 @@
                             </span>
                         </label>
                         <label class="block">
-                            <span>Desc</span>
+                            <span>Description</span>
+                            <multiselect id="tagging" v-model="selectedSkills" tag-placeholder="Add this as new tag" placeholder="Search or add a tag" label="name" track-by="name" :options="props.skills" :multiple="true" :taggable="true"></multiselect>
+                        </label>
+                        <label class="block">
+                            <span>Description</span>
                             <textarea v-model="form.desc" rows="4" placeholder="Description" class="form-textarea mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent p-2.5"></textarea>
                         </label>
                         <span>Old Images</span>
@@ -55,14 +59,15 @@
                                         <div class="avatar size-18 h-px-50 w-px-50">
                                             <img class="rounded-full" :src="`${cdnUrl}/${row.image}`" alt="avatar">
                                         </div>
-                                        <button type="button"  @click="imageToDelete(row)" class="btn size-8 p-0 text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25">
+                                        <h3>{{ row.image.split('_').pop() }}</h3>
+                                        <button type="button" @click="imageToDelete(row)" class="btn size-8 p-0 text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25">
                                             <i class="fa fa-trash-alt"></i>
                                         </button>
                                     </div>
                                 </li>
                             </ul>
                         </div>
-                        <div class="flex justify-start gap-1 align-items-center  m-t-px-20">
+                        <div class="flex justify-end gap-1 align-items-center  m-t-px-20">
                             <button @click="closeModal" class="btn bg-slate-150 font-medium text-slate-800 hover:bg-slate-200 focus:bg-slate-200 active:bg-slate-200/80 dark:bg-navy-500 dark:text-navy-50 dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90">
                                 Cancel
                             </button>
@@ -80,7 +85,7 @@
 
 <script setup>
 import {
-    ref
+    ref,
 } from 'vue';
 
 import {
@@ -97,11 +102,7 @@ import {
     cdnUrl
 } from "@/config.js";
 import FilePondComponent from "@/common/component/FilePondComponent.vue";
-const showModal = ref(false);
-const editMode = ref(false);
-let imgUrl = ref(
-    "https://raw.githubusercontent.com/w15147m/bootstrap5admindashboardmultiple-main/refs/heads/main/images/app-logo.png"
-);
+import Multiselect from 'vue-multiselect';
 const props = defineProps({
     modelValue: {
         type: Array,
@@ -111,7 +112,14 @@ const props = defineProps({
         type: Number,
         default: 0,
     },
+    skills: {
+        type: Array,
+        default: () => [],
+    },
 });
+const showModal = ref(false);
+const editMode = ref(false);
+
 const form = ref(new Form({
     id: '',
     name: '',
@@ -120,19 +128,20 @@ const form = ref(new Form({
     image: [],
     image_t0_delete: [],
 }));
-const projectImages = ref([]);
 const oldImages = ref([]);
-
+const selectedSkills = ref([]);
 const emit = defineEmits(['update:modelValue']);
+
 const imageToDelete = (dataToDelete) => {
     if (!form.value.image_t0_delete) {
-        form.value.image_t0_delete = []; 
+        form.value.image_t0_delete = [];
     }
     form.value.image_t0_delete.push(dataToDelete.image);
     oldImages.value = oldImages.value.filter((item) => item.id !== dataToDelete.id);
     console.log(dataToDelete.image);
 
 }
+
 const closeModal = () => {
     editMode.value = false;
     showModal.value = false;
@@ -154,8 +163,6 @@ const handleFileUpload = (file) => {
 };
 
 const submitForm = () => {
-    console.log(form.value.image);
-
     form.value.portfolio_id = props.portfolio_id;
     const formData = new FormData();
     formData.append("id", form.value.id);
@@ -163,10 +170,13 @@ const submitForm = () => {
     formData.append("name", form.value.name);
     formData.append("link", form.value.link);
     formData.append("desc", form.value.desc);
+    selectedSkills.value.forEach((skill) => {
+        formData.append("skills[]", skill.id);
+    });
     formData.append("image_t0_delete", form.value.image_t0_delete);
     if (form.value.image && Array.isArray(form.value.image)) {
         form.value.image.forEach((file) => {
-            formData.append("images[]", file); 
+            formData.append("images[]", file);
         });
     }
     if (editMode.value) {
@@ -203,5 +213,8 @@ defineExpose({
 </script>
 
 <style scoped>
-/* Add any additional styles if needed */
+.modal {
+    --bs-modal-zindex: 1055;
+    --bs-modal-width: 800px;
+}
 </style>

@@ -56,9 +56,11 @@ onMounted(() => {
     if (props.image) {
     filePondFiles.value = [
       {
-        source: `${cdnUrl}/${props.image}`,
-      },
+          
+          source: `${cdnUrl}/${props.image}`,
+        },
     ];
+    console.log(props.image);
   }
     
 })

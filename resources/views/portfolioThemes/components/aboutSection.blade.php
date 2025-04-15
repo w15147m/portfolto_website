@@ -7,7 +7,7 @@
                 <div class="relative group scroll-animate fade-in-left">
                     <div class="absolute inset-0 bg-gradient-to-r from-primary to-secondary rounded-2xl blur-xl opacity-20 group-hover:opacity-30 transition-all duration-500 ease-in-out transform group-hover:scale-105"></div>
                     <div class="w-1oo flex justify-center">
-                        <img src="{{ 'storage/'.$profile->image }}" alt="About Me" class="relative rounded-2xl shadow-lg transition-transform duration-500 hover:scale-105">
+                        <img src="{{ 'storage/'.$profile->image }}" alt="About Me" class="relative  duration-500 hover:scale-105">
                     </div>
                 </div>
                 <div class="space-y-6 scroll-animate fade-in-right">

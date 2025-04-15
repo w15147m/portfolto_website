@@ -7,7 +7,7 @@
                 <div class="relative group scroll-animate fade-in-left">
                     <div class="absolute inset-0 bg-gradient-to-r from-primary to-secondary rounded-2xl blur-xl opacity-20 group-hover:opacity-30 transition-all duration-500 ease-in-out transform group-hover:scale-105"></div>
                     <div class="w-1oo flex justify-center">
-                        <img src="{{ 'storage/'.$profile->image }}" alt="About Me" class="relative  transition-transform duration-500 hover:scale-105">
+                        <img src="{{ 'storage/'.$profile->image }}" alt="About Me" class="relative rounded-2xl shadow-lg transition-transform duration-500 hover:scale-105">
                     </div>
                 </div>
                 <div class="space-y-6 scroll-animate fade-in-right">
@@ -16,19 +16,19 @@
                         {{ $profile->desc}}
                     </p>
                     <div class="grid grid-cols-2 gap-6">
-                        <div class="bg-light-bg dark:bg-dark-bg rounded-xl p-4 shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl hover:bg-primary/5">
+                        <div class="bg-light-bg dark:bg-dark-bg rounded-xl p-4 shadow-lg transform transition-all duration-300 hover:scale-110 hover:shadow-xl hover:bg-primary/5 hover:z-10 relative">
                             <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Experience</h4>
                             <p class="text-gray-600 dark:text-gray-400">5+ Years</p>
                         </div>
-                        <div class="bg-light-bg dark:bg-dark-bg rounded-xl p-4 shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl hover:bg-primary/5">
+                        <div class="bg-light-bg dark:bg-dark-bg rounded-xl p-4 shadow-lg transform transition-all duration-300 hover:scale-110 hover:shadow-xl hover:bg-primary/5 hover:z-10 relative">
                             <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Projects</h4>
                             <p class="text-gray-600 dark:text-gray-400">50+ Completed</p>
                         </div>
-                        <div class="bg-light-bg dark:bg-dark-bg rounded-xl p-4 shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl hover:bg-primary/5">
+                        <div class="bg-light-bg dark:bg-dark-bg rounded-xl p-4 shadow-lg transform transition-all duration-300 hover:scale-110 hover:shadow-xl hover:bg-primary/5 hover:z-10 relative">
                             <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Clients</h4>
                             <p class="text-gray-600 dark:text-gray-400">30+ Happy Clients</p>
                         </div>
-                        <div class="bg-light-bg dark:bg-dark-bg rounded-xl p-4 shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl hover:bg-primary/5">
+                        <div class="bg-light-bg dark:bg-dark-bg rounded-xl p-4 shadow-lg transform transition-all duration-300 hover:scale-110 hover:shadow-xl hover:bg-primary/5 hover:z-10 relative">
                             <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Location</h4>
                             <p class="text-gray-600 dark:text-gray-400">{{ $profile->address}}</p>
                         </div>
@@ -42,19 +42,19 @@
     /* Scroll animation styles */
     .scroll-animate {
         opacity: 0;
-        transition: all 0.8s ease-out;
+        transition: all 0.4s ease-out;
     }
     
     .fade-in-down {
-        transform: translateY(30px);
+        transform: translateY(150px);
     }
     
     .fade-in-left {
-        transform: translateX(-30px);
+        transform: translateX(-150px);
     }
     
     .fade-in-right {
-        transform: translateX(30px);
+        transform: translateX(150px);
     }
     
     .scroll-animate.visible {

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full">
 
 <head>
     <meta charset="utf-8">
@@ -43,71 +43,81 @@
     </style>
 </head>
 
-<body class="bg-light-bg dark:bg-dark-bg transition-colors duration-300">
-    @include('portfolioThemes.layouts.mobileSidebar')
-    @include('portfolioThemes.layouts.navbar')
-    @include('portfolioThemes.components.heroSection', ['profile' => $portfolios] )
-    @include('portfolioThemes.components.aboutSection', ['profile' => $portfolios])
-    @include('portfolioThemes.components.projectsSection', ['projects' => $portfolios->projects])
-    @include('portfolioThemes.components.skillsSection', ['skills' => $portfolios->skills])
-    @include('portfolioThemes.components.educationSection', ['portfolios' => $portfolios])
-    @include('portfolioThemes.components.experienceSection', ['portfolios' => $portfolios])
-    @include('portfolioThemes.components.servicesSection', ['portfolios' => $portfolios])
-    @include('portfolioThemes.components.contactSection')
-    @include('portfolioThemes.layouts.footer')
+<body class="flex flex-col min-h-screen bg-light-bg dark:bg-dark-bg transition-colors duration-300">
+    <div class="flex-none">
+        @include('portfolioThemes.layouts.mobileSidebar')
+        @include('portfolioThemes.layouts.navbar')
+    </div>
+    
+    <div class="flex-grow">
+        @include('portfolioThemes.components.heroSection', ['profile' => $portfolios] )
+        @include('portfolioThemes.components.aboutSection', ['profile' => $portfolios])
+        @include('portfolioThemes.components.projectsSection', ['projects' => $portfolios->projects])
+        @include('portfolioThemes.components.skillsSection', ['skills' => $portfolios->skills])
+        @include('portfolioThemes.components.educationSection', ['portfolios' => $portfolios])
+        @include('portfolioThemes.components.experienceSection', ['portfolios' => $portfolios])
+        @include('portfolioThemes.components.servicesSection', ['portfolios' => $portfolios])
+        @include('portfolioThemes.components.contactSection')
+    </div>
+    
+    <div class="flex-none">
+        @include('portfolioThemes.layouts.footer')
+    </div>
+    
     @vite('resources/js/app.js')
-</body>
-<script>
-    // Theme toggle functionality
-    const themeToggle = document.getElementById('themeToggle');
-    const html = document.documentElement;
 
-    // Check for saved theme preference or use system preference
-    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        html.classList.add('dark');
-    } else {
-        html.classList.remove('dark');
-    }
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
 
-    // Toggle theme
-    themeToggle.addEventListener('click', () => {
-        html.classList.toggle('dark');
-        localStorage.theme = html.classList.contains('dark') ? 'dark' : 'light';
-    });
-
-    // Mobile sidebar functionality
-    const openSidebar = document.getElementById('openSidebar');
-    const closeSidebar = document.getElementById('closeSidebar');
-    const mobileSidebar = document.getElementById('mobileSidebar');
-    const sidebarContent = mobileSidebar.querySelector('div.fixed');
-
-    openSidebar.addEventListener('click', () => {
-        mobileSidebar.classList.remove('hidden');
-        setTimeout(() => {
-            sidebarContent.classList.remove('translate-x-full');
-        }, 0);
-    });
-
-    closeSidebar.addEventListener('click', () => {
-        sidebarContent.classList.add('translate-x-full');
-        setTimeout(() => {
-            mobileSidebar.classList.add('hidden');
-        }, 300);
-    });
-
-    // Close sidebar when clicking outside
-    mobileSidebar.addEventListener('click', (e) => {
-        if (e.target === mobileSidebar) {
-            closeSidebar.click();
+        // Check for saved theme preference or use system preference
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+        } else {
+            html.classList.remove('dark');
         }
-    });
 
-    // Close sidebar when clicking on a link
-    const sidebarLinks = mobileSidebar.querySelectorAll('a');
-    sidebarLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            closeSidebar.click();
+        // Toggle theme
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            localStorage.theme = html.classList.contains('dark') ? 'dark' : 'light';
         });
-    });
-</script>
+
+        // Mobile sidebar functionality
+        const openSidebar = document.getElementById('openSidebar');
+        const closeSidebar = document.getElementById('closeSidebar');
+        const mobileSidebar = document.getElementById('mobileSidebar');
+        const sidebarContent = mobileSidebar.querySelector('div.fixed');
+
+        openSidebar.addEventListener('click', () => {
+            mobileSidebar.classList.remove('hidden');
+            setTimeout(() => {
+                sidebarContent.classList.remove('translate-x-full');
+            }, 0);
+        });
+
+        closeSidebar.addEventListener('click', () => {
+            sidebarContent.classList.add('translate-x-full');
+            setTimeout(() => {
+                mobileSidebar.classList.add('hidden');
+            }, 300);
+        });
+
+        // Close sidebar when clicking outside
+        mobileSidebar.addEventListener('click', (e) => {
+            if (e.target === mobileSidebar) {
+                closeSidebar.click();
+            }
+        });
+
+        // Close sidebar when clicking on a link
+        const sidebarLinks = mobileSidebar.querySelectorAll('a');
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                closeSidebar.click();
+            });
+        });
+    </script>
+</body>
 </html>

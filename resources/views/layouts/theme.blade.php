@@ -51,6 +51,7 @@
     @include('portfolioThemes.components.projectsSection', ['projects' => $portfolios->projects])
     @include('portfolioThemes.components.skillsSection', ['skills' => $portfolios->skills])
     @include('portfolioThemes.components.educationSection', ['portfolios' => $portfolios])
+    @include('portfolioThemes.components.experienceSection', ['portfolios' => $portfolios])
     @include('portfolioThemes.components.servicesSection', ['portfolios' => $portfolios])
     @include('portfolioThemes.components.contactSection')
     @include('portfolioThemes.layouts.footer')

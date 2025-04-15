@@ -1,7 +1,7 @@
     <!-- Contact Section with Enhanced Features -->
     <section id="contact" class="py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-light-card dark:bg-dark-card rounded-2xl shadow-xl overflow-hidden scroll-animate fade-in-up">
+            <div class="bg-light-card dark:bg-dark-card rounded-2xl shadow-xl overflow-hidden">
                 <div class="grid grid-cols-1 lg:grid-cols-2">
                     <!-- Contact Information -->
                     <div class="p-8 lg:p-12 bg-gradient-to-br from-primary to-secondary text-white">
@@ -108,12 +108,15 @@
         opacity: 0;
         transition: all 0.4s ease-out;
     }
+    
     .fade-in-down {
-        transform: translateX(30px);
+        transform: translateY(150px);
     }
+    
     .fade-in-up {
-        transform: translateX(30px);
+        transform: translateY(150px);
     }
+    
     .scroll-animate.visible {
         opacity: 1;
         transform: translate(0, 0);

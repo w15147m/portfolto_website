@@ -9,20 +9,19 @@
         <div class="circle w-16 h-16 bg-primary/15 dark:bg-primary/25 rounded-full absolute top-40 left-1/3" data-speed="0.07" data-float-delay="1.5"></div>
         <div class="circle w-20 h-20 bg-secondary/15 dark:bg-secondary/25 rounded-full absolute top-60 right-1/4" data-speed="0.09" data-float-delay="0.5"></div>
     </div>
-    
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div class="text-center lg:text-left transform transition-all duration-700 opacity-0 translate-y-8" id="heroText">
-                <div class="relative inline-block">
+            <div class="text-center lg:text-left">
+                <div class="relative inline-block scroll-animate fade-in-down">
                     <span class="absolute inset-0 bg-gradient-to-r from-primary to-secondary blur-2xl opacity-30 dark:opacity-40 animate-pulse"></span>
                     <h1 class="relative text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
                         {{ $profile->name}}
                     </h1>
                 </div>
-                <p class="text-xl text-gray-600 dark:text-gray-400 mb-8 transition-all duration-700 delay-100 opacity-0 translate-y-8" id="heroSubtext">
+                <p class="text-xl text-gray-600 dark:text-gray-400 mb-8 scroll-animate fade-in-up" style="transition-delay: 0.1s">
                     {{ $profile->desc}}
                 </p>
-                <div class="flex flex-wrap justify-center lg:justify-start gap-4 transition-all duration-700 delay-200 opacity-0 translate-y-8" id="heroButtons">
+                <div class="flex flex-wrap justify-center lg:justify-start gap-4 scroll-animate fade-in-up" style="transition-delay: 0.2s">
                     <a href="#contact" class="px-8 py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-lg hover:shadow-lg hover:shadow-primary/50 dark:hover:shadow-primary/40 transition-all duration-300 transform hover:-translate-y-1">
                         Start a Project
                     </a>
@@ -31,9 +30,9 @@
                     </a>
                 </div>
             </div>
-            <div class="relative transform transition-all duration-700 opacity-0 translate-x-8" id="heroImage">
-                <div class="absolute inset-0 bg-gradient-to-r from-primary  rounded-full blur-3xl opacity-20 animate-pulse"></div>
-                <img src="{{ 'storage/'.$profile->image }}" alt="Profile Picture" class="relative  transform transition-all duration-500 hover:scale-105 hover:shadow-primary/50 dark:hover:shadow-primary/40">
+            <div class="relative scroll-animate fade-in-up" style="transition-delay: 0.3s">
+                <div class="absolute inset-0 bg-gradient-to-r from-primary rounded-full blur-3xl opacity-20 animate-pulse"></div>
+                <img src="{{ 'storage/'.$profile->image }}" alt="Profile Picture" class="relative transform transition-all duration-500 hover:scale-105 hover:shadow-primary/50 dark:hover:shadow-primary/40">
             </div>
         </div>
     </div>
@@ -52,36 +51,31 @@
     .custom-shape {
         clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
     }
-    
-    /* Loading Animation */
-    .loader {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: #fff;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
-        transition: opacity 0.5s ease-out;
-    }
-    .loader.hidden {
+
+    /* Scroll animation styles */
+    .scroll-animate {
         opacity: 0;
-        pointer-events: none;
+        transition: all 0.4s ease-out;
     }
-    .loader-spinner {
-        width: 50px;
-        height: 50px;
-        border: 5px solid #f3f3f3;
-        border-top: 5px solid #8B5CF6;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
+    
+    .fade-in-down {
+        transform: translateY(150px);
     }
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+    
+    .fade-in-up {
+        transform: translateY(150px);
+    }
+    
+    .scroll-animate.visible {
+        opacity: 1;
+        transform: translate(0, 0);
+    }
+
+    /* Circle animations */
+    .circle {
+        transition: transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+        will-change: transform;
+        position: absolute;
     }
 
     /* Scroll Progress */
@@ -146,10 +140,6 @@
     
     .floating-circle {
         transition: all 0.5s ease;
-    }
-    
-    .nav-item-active {
-        color: #8B5CF6;
     }
     
     /* Parallax effect for the circles */
@@ -244,28 +234,9 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize the hero section animations
-    setTimeout(() => {
-        document.getElementById('heroText').classList.remove('opacity-0', 'translate-y-8');
-        document.getElementById('heroSubtext').classList.remove('opacity-0', 'translate-y-8');
-        document.getElementById('heroButtons').classList.remove('opacity-0', 'translate-y-8');
-        document.getElementById('heroImage').classList.remove('opacity-0', 'translate-x-8');
-    }, 300);
-    
     // Parallax effect for circles
     const parallaxContainer = document.getElementById('parallaxContainer');
     const circles = document.querySelectorAll('.circle');
-    
-    // Initial random positions for circles
-    circles.forEach(circle => {
-        const floatDelay = parseFloat(circle.getAttribute('data-float-delay'));
-        const randomX = Math.random() * 100 - 50;
-        const randomY = Math.random() * 100 - 50;
-        
-        setTimeout(() => {
-            circle.style.transform = `translate(${randomX}px, ${randomY}px)`;
-        }, floatDelay * 1000);
-    });
     
     // Mouse move parallax effect
     document.addEventListener('mousemove', function(e) {
@@ -280,24 +251,26 @@ document.addEventListener('DOMContentLoaded', function() {
             circle.style.transform = `translate(${moveX}px, ${moveY}px)`;
         });
     });
-    
-    // Add random floating animation to circles
-    function animateCircles() {
-        circles.forEach(circle => {
-            const speed = parseFloat(circle.getAttribute('data-speed'));
-            const floatDelay = parseFloat(circle.getAttribute('data-float-delay'));
-            
-            // Random movement
-            const randomX = (Math.random() * 100 - 50) * speed;
-            const randomY = (Math.random() * 100 - 50) * speed;
-            
-            circle.style.transform = `translate(${randomX}px, ${randomY}px)`;
+
+    // Scroll animations
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            } else {
+                entry.target.classList.remove('visible');
+            }
         });
-    }
-    
-    // Animate circles every 5 seconds
-    setInterval(animateCircles, 5000);
-    
+    }, {
+        threshold: 0.2,
+        rootMargin: '0px 0px -50px 0px'
+    });
+
+    const animatedElements = document.querySelectorAll('.scroll-animate');
+    animatedElements.forEach(el => {
+        observer.observe(el);
+    });
+
     // Scroll progress indicator
     const scrollProgress = document.createElement('div');
     scrollProgress.className = 'scroll-progress';

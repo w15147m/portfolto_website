@@ -44,13 +44,14 @@
 </head>
 
 <body class="bg-light-bg dark:bg-dark-bg transition-colors duration-300">
-    {{-- {{$portfolios->projects}} --}}
     @include('portfolioThemes.layouts.mobileSidebar')
     @include('portfolioThemes.layouts.navbar')
     @include('portfolioThemes.components.heroSection', ['profile' => $portfolios] )
     @include('portfolioThemes.components.aboutSection', ['profile' => $portfolios])
     @include('portfolioThemes.components.projectsSection', ['projects' => $portfolios->projects])
     @include('portfolioThemes.components.skillsSection', ['skills' => $portfolios->skills])
+    @include('portfolioThemes.components.educationSection', ['portfolios' => $portfolios])
+    @include('portfolioThemes.components.servicesSection', ['portfolios' => $portfolios])
     @include('portfolioThemes.components.contactSection')
     @include('portfolioThemes.layouts.footer')
     @vite('resources/js/app.js')

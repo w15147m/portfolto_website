@@ -1,11 +1,12 @@
 <!-- Projects Section -->
 <section id="projects" class="py-20 bg-light-bg dark:bg-dark-bg">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-4xl font-bold text-center mb-16 text-gray-900 dark:text-white">Featured Projects</h2>
+        <h2 class="text-4xl font-bold text-center mb-16 text-gray-900 dark:text-white scroll-animate fade-in-down">Featured Projects</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             @foreach ($projects as $project)
                 <div
-                    class="group bg-light-card dark:bg-dark-card rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                    class="group bg-light-card dark:bg-dark-card rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 hover:z-10 relative scroll-animate fade-in-up"
+                    style="transition-delay: {{ $loop->index * 0.1 }}s">
                     <div class="relative overflow-hidden">
                         @php
                             $firstImage = $project['images'][0]['image'] ?? null;
@@ -54,3 +55,53 @@
         </div>
     </div>
 </section>
+
+<style>
+    /* Scroll animation styles for projects section */
+    .scroll-animate {
+        opacity: 0;
+        transition: all 0.4s ease-out;
+    }
+    
+    .fade-in-down {
+        transform: translateY(150px);
+    }
+    
+    .fade-in-up {
+        transform: translateY(150px);
+    }
+    
+    .scroll-animate.visible {
+        opacity: 1;
+        transform: translate(0, 0);
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Create the Intersection Observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                // Add the 'visible' class when the element is in view
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                } else {
+                    // Remove the 'visible' class when the element is out of view
+                    // This will reset the animation for the next time it comes into view
+                    entry.target.classList.remove('visible');
+                }
+            });
+        }, {
+            threshold: 0.2,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        // Select all elements with the scroll-animate class
+        const animatedElements = document.querySelectorAll('.scroll-animate');
+        
+        // Observe each element
+        animatedElements.forEach(el => {
+            observer.observe(el);
+        });
+    });
+</script>

@@ -9,6 +9,8 @@
                 <a href="#about" class="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">About</a>
                 <a href="#projects" class="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">Projects</a>
                 <a href="#skills" class="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">Skills</a>
+                <a href="#education" class="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">Education</a>
+                <a href="#services" class="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">Services</a>
                 <a href="#contact" class="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">Contact</a>
                 <button id="themeToggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
                     <i class="fas fa-sun text-yellow-500 dark:hidden"></i>

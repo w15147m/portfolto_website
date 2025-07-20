@@ -27,29 +27,21 @@
                     <div class="">
                         <label class="block">
                             <label class="block">
-                            <span>Company</span>
+                                <span>Skill Name</span>
+                                <span class="relative mt-1.5 flex">
+                                    <input v-model="form.name" class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9" placeholder="Skill Name" type="text">
+                                    <span class="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400">
+                                        <i class="fa-solid fa-chalkboard-user"></i>
+                                    </span>
+                                </span>
+                            </label>
+                            <span>Proficiency</span>
                             <span class="relative mt-1.5 flex">
-                                <input v-model="form.company" class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9" placeholder="Company" type="text">
+                                <input v-model="form.proficiency" class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9" placeholder="Proficiency" type="text" />
                                 <span class="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400">
-                                    <i class="fa-solid fa-building"></i>
+                                    <i class="fa-solid fa-id-card-clip"></i>
                                 </span>
                             </span>
-                        </label>
-                            <span>Position</span>
-                            <span class="relative mt-1.5 flex">
-                                <input v-model="form.position" class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9" placeholder="position" type="text" />
-                                <span class="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400">
-                                    <i class="fa-solid fa-user-plus"></i>
-                                </span>
-                            </span>
-                        </label>
-                        <label class="block">
-                            <span>Start date</span>
-                            <VueDatePicker v-model="form.start_date" placeholder="Start date" text-input :auto-apply="true" />
-                        </label>
-                        <label class="block">
-                            <span>End date</span>
-                            <VueDatePicker v-model="form.end_date" placeholder="End date" text-input :auto-apply="true" />
                         </label>
                         <label class="block">
                             <span>Desc</span>
@@ -102,12 +94,10 @@ const props = defineProps({
 });
 const form = ref(new Form({
     id: '',
-    company: '',
-    position: '',
+    name: '',
+    proficiency: '',
     portfolio_id: props.portfolio_id,
     image: '',
-    start_date: '',
-    end_date: '',
     desc: '',
 }));
 
@@ -129,23 +119,21 @@ const handleFileUpload = (file) => {
 
 const submitForm = () => {
     form.value.portfolio_id = props.portfolio_id;
-    const formData = new FormData(); 
+    const formData = new FormData();
     formData.append("id", form.value.id);
     formData.append("portfolio_id", form.value.portfolio_id);
-    formData.append("company", form.value.company);
-    formData.append("position", form.value.position);
-    formData.append("start_date", form.value.start_date);
-    formData.append("end_date", form.value.end_date);
+    formData.append("name", form.value.name);
+    formData.append("proficiency", form.value.proficiency);
     formData.append("desc", form.value.desc);
     if (form.value.image) {
         formData.append("image", form.value.image);
     }
     if (editMode.value) {
-        funcApi.post(`/api/experience/update/${form.value.id}`, formData)
+        funcApi.post(`/api/skills/update/skill/${form.value.id}`, formData)
             .then((response) => {
-                const updatedExperience = response.data.experience;
+                const updatedSkill = response.data.skill;
                 const updatedValue = props.modelValue.map((item) =>
-                    item.id === updatedExperience?.id ? updatedExperience : item
+                    item.id === updatedSkill?.id ? updatedSkill : item
                 );
                 emit('update:modelValue', updatedValue);
                 toast.success(response.data.message, {
@@ -154,10 +142,10 @@ const submitForm = () => {
                 closeModal();
             });
     } else {
-        funcApi.post('/api/experience', formData)
+        funcApi.post('/api/skills', formData)
             .then((response) => {
-                const NewAddExperience = response.data.experience;
-                const NewAddValue = props.modelValue.unshift(NewAddExperience);
+                const NewAddSkill = response.data.skill;
+                const NewAddValue = props.modelValue?.unshift(NewAddSkill);
                 // emit('update:modelValue', updatedValue);
                 toast.success(response.data.message, {
                     position: toast.POSITION.TOP_RIGHT,

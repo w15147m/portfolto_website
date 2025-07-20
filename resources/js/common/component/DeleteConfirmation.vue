@@ -66,8 +66,6 @@ const handleEscape = (event) => {
     }
 };
 const openModal = (item, url) => {
-    console.log(item);
-    
     showModal.value = true;
     massageData.name = item.name;
     massageData.id = item.id;
@@ -77,7 +75,6 @@ const deleteItem = () => {
     axios.delete(massageData.url, {
         headers: getHeader(),
     }).then((response) => {
-        console.log(response);
         const updatedValue = props.modelValue.filter((item) => item.id !== massageData.id);
         toast.success(response.data.message, {
             position: toast.POSITION.TOP_RIGHT,

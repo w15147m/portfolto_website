@@ -69,7 +69,6 @@ const logout = () => {
     axios.post('/logout', {
         _token: csrf,
     }).then(response => {
-        console.log(response);
         window.location.href = '/';
     }).catch(error => {
         console.log(error);

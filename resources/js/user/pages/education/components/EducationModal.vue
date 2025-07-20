@@ -118,11 +118,9 @@ const closeModal = () => {
     form.value.reset();
 };
 const openModal = (data) => {
-    
     showModal.value = true;
     editMode.value = true;
     form.value.fill(data);
-    console.log(form.value);
 };
 
 const handleFileUpload = (event) => {
@@ -130,8 +128,6 @@ const handleFileUpload = (event) => {
 };
 
 const submitForm = () => {
-    console.log(form.value);
-    
     form.value.portfolio_id = props.portfolio_id;
     if (editMode.value) {
         funcApi.put(`/api/education/${form.value.id}`, form.value)

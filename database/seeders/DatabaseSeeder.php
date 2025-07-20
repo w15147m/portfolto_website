@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
 
         // Create 2 Users
         $userIds = [];
-        for ($i = 1; $i <= 2; $i++) {
+        for ($i = 1; $i <= 1; $i++) {
             $userIds[] = DB::table('users')->insertGetId([
                 'name' => 'User ' . $i,
                 'email' => 'user' . $i . '@example.com',

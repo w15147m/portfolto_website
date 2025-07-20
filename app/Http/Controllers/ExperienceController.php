@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Experience;
 use App\Traits\ManageFiles;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class ExperienceController extends Controller
@@ -15,9 +13,6 @@ class ExperienceController extends Controller
     public function portfolioExperience($portfolio_id)
     {
         $experience = Experience::where('portfolio_id', $portfolio_id)->get();
-        if ($experience->isEmpty()) {
-            return response()->json(['message' => 'No portfolio found'], 404);
-        }
         return response()->json($experience);
     }
     public function store(Request $request)
@@ -34,7 +29,7 @@ class ExperienceController extends Controller
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $filename = 'experience_' . $request->portfolio_id . '_' . time() . '.png' ;
-             $path = 'profile/experience/';
+             $path = 'portfolio/experience/';
             $this->uploadImg($path, $image, $filename);
             $validatedData['image'] = $path.$filename;
         }else{
@@ -51,7 +46,6 @@ class ExperienceController extends Controller
     public function updateExperience(Request $request, $id)
     {
 
-        Log::info($request->all());
         $experience = Experience::findOrFail($id);
         $validatedData = $request->validate([
             'company' => 'string|max:20',
@@ -68,7 +62,7 @@ class ExperienceController extends Controller
             }
             $image = $request->file('image');
             $filename = 'experience_' . $experience->id . '.png' ;
-            $path = 'profile/experience/';
+            $path = 'portfolio/experience/';
             $this->uploadImg($path, $image, $filename);
             $validatedData['image'] = $path.$filename;
         }else{
@@ -102,6 +96,9 @@ class ExperienceController extends Controller
     public function destroy($id)
     {
         $experience = Experience::findOrFail($id);
+        if ($experience->image) {
+            Storage::disk('public')->delete($experience->image);
+        }
         $experience->delete();
 
         return response()->json(['message' =>  'Experience deleted successfully!']);

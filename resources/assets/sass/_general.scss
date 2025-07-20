@@ -226,6 +226,9 @@ $custom-colors: map-merge($theme-colors, $custom-theme-colors);
     .m-l-px-#{$i} {
         margin-left: #{$i}px !important;
     }
+    .m-l-px--#{$i} {
+        margin: -#{$i}px !important;
+      }
     .m-r-px-#{$i} {
         margin-right: #{$i}px !important;
     }
